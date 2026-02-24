@@ -1,4 +1,4 @@
- // ── FLOATING EMOJIS ──
+ // ── FLOATING EMOJIS : Esto hace que en el incio de sesion se vea que flotan los emojis──
  const floaters = ['🍓', '🫔', '🍰', '🧇', '🍫', '🥤', '🍦', '🍮', '🎂', '🥭', '🍪', '🍩'];
  const floaterContainer = document.getElementById('floaters');
  floaters.forEach((emoji, i) => {
