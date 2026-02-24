@@ -29,13 +29,13 @@
                     <!-- Nombre completo -->
                     <div class="form-group">
                         <label class="form-label" for="nombre">Nombre completo <span class="required">*</span></label>
-                        <input type="text" class="form-input" id="nombre" placeholder="Ej: Daniela" required />
+                        <input type="text" class="form-input" id="idnombre" placeholder="Ej: Daniela" required />
                     </div>
 
                     <!-- Nombre de usuario -->
                     <div class="form-group">
                         <label class="form-label" for="usuario">Nombre de usuario<span class="required">*</span></label>
-                        <input type="text" class="form-input" id="usuario" placeholder="Ej: Dani" require>
+                        <input type="text" class="form-input" id="idusuario" placeholder="Ej: Dani" require>
                     </div>
 
                     <!--Contraseña -->
@@ -59,7 +59,7 @@
                                 <div class="role-desc">Acceso total</div>
                             </div>
 
-                            <input type="hidden" name="rol" id="rol-input" required />
+                            <input type="hidden" name="rol" id="idrol" required />
                         </div>
 
                     </div>

@@ -32,6 +32,16 @@ switch($opcion){
         echo json_encode(["data" => $lista]);
         exit; 
         break;
+    case 'insertar-usuarios':
+        $nombre = $_POST['nombre'] ?? '';
+        $usuario = $_POST['usuario'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $rol = $_POST['rol'] ?? '';
+
+        $resultado = $db->insertarUsuario($nombre, $usuario, $password, $rol);
+        echo $resultado ? 1 :0 ;
+        exit;
+        break;
 }
 
 ?>
