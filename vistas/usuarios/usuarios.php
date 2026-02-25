@@ -105,6 +105,9 @@
             </div>
          </div>
     </div>
+
+    <!-- Modal para editar a los usuarios --> 
+     <?php include '../../componentes/modales/modalEditarUsuario.php';?>
 </body>
 
 </html>

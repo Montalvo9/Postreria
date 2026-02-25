@@ -49,4 +49,17 @@ class modeloUsuario
             return false;
         }
     }
+
+    public function obtenerDatosUsuario($id){
+        //Preparamos la consulta con un marcador de posición (?) por seguridad de los datos
+        $query = $this->db->prepare("SELECT id_usuario, nombre, usuario, activo FROM usuarios WHERE id_usuario = ?"); 
+        //ejecutamos la consulta 
+        $query->execute([$id]); 
+
+        /**Como solo esperamos un resultado , usamos fecth() directamente si while 
+         * PDO::FETCH_ASSOC nos devuelve ub objeto y no un arreglo 
+         * 
+         */
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
 }

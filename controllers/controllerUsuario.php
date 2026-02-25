@@ -42,6 +42,14 @@ switch($opcion){
         echo $resultado ? 1 :0 ;
         exit;
         break;
+    case 'obtenerDatosUsuario': 
+        $id = $_POST['idusuario'];
+        $datos = $db->obtenerDatosUsuario($id);
+        // Mandamos los datos como JSON para que el modal los pueda "leer" y mostrar
+        header('Content-Type: application/json');
+        echo json_encode($datos);        
+        exit;
+        break;
 }
 
 ?>

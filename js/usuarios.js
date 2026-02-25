@@ -25,6 +25,60 @@ function cancelarForm() {
 }
 
 /** ------------------------------------------------------------------*/
+/*  Las siguientes funciones son para editar el tipo de rol al editar el usuario*/
+function selectRoleEditar(element, rol) {
+    document.querySelectorAll('#frmEditarUsuario .role-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    element.classList.add('selected');
+    document.getElementById('editarRol').value = rol;
+}
+
+
+function toggleStatus() {
+
+    const toggle = document.getElementById('status-toggle');
+    const text = document.getElementById('status-text');
+    const emoji = document.getElementById('status-emoji');
+    const input = document.getElementById('editarActivo');
+
+    toggle.classList.toggle('active'); //active es de css, class list es la lista de clases css
+
+    if (toggle.classList.contains('active')) {
+        text.textContent = "Usuario activo";
+        emoji.textContent = "✅";
+        input.value = "1";
+    } else {
+        text.textContent = "Usuario inactivo";
+        emoji.textContent = "❌";
+        input.value = "0";
+    }
+}
+
+function cargarEstadoEditar(activo) {
+
+    const toggle = document.getElementById('status-toggle');
+    const text = document.getElementById('status-text');
+    const emoji = document.getElementById('status-emoji');
+    const input = document.getElementById('editarActivo');
+
+    if (activo == 1) {
+        toggle.classList.add('active');
+        text.textContent = "Usuario activo";
+        emoji.textContent = "✅";
+        input.value = "1";
+    } else {
+        toggle.classList.remove('active');
+        text.textContent = "Usuario inactivo";
+        emoji.textContent = "❌";
+        input.value = "0";
+    }
+}
+
+
+//------------------------------------------------------------------------------
+
 
 //DATATABLE
 tablaControlUsuarios = $("#tablaUsuarios").DataTable({
@@ -82,7 +136,7 @@ function registrarUsuario() {
         "rol": document.getElementById("idrol").value,
     };
 
-    //Peticion AJAC
+    //Peticion AJAx
     $.ajax({
         url: '/Postreria/controllers/controllerUsuario.php',
         type: 'POST',
@@ -121,4 +175,38 @@ function registrarUsuario() {
             });
         }
     });
+}
+
+/**Esta funcion abre el modal pero trae los datos del usario selecionado y se rellenal al modal paa editar solamente el campo deseado
+ * y los traemos por id.
+ */
+function obtenerDatos(id) {
+    document.getElementById("idUsuarioSelecionado").value = id;
+    $('#editarUsuarioModal').modal('show');
+    //Llamamos a la función que se encarga de traer los datos de los usuarios paara mosrarlos en el modal
+    obtenerDatosUsuario(id);
+}
+
+function obtenerDatosUsuario(id) {
+    $.ajax({
+        url: "/Postreria/controllers/controllerUsuario.php",
+        type: 'POST',
+        dataType: 'json', //jquery parsea el json solo
+        data: {
+            opcion: 'obtenerDatosUsuario',
+            idusuario: id
+        },
+        success: function(item) {
+            console.log(item);
+
+            document.getElementById('editarNombre').value = item.nombre;
+            document.getElementById('editarNombreDeUsuario').value = item.usuario;
+
+            cargarEstadoEditar(item.activo);
+
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText); //para debuguear
+        }
+    })
 }
