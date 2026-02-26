@@ -50,11 +50,12 @@ class modeloUsuario
         }
     }
 
-    public function obtenerDatosUsuario($id){
+    public function obtenerDatosUsuario($id)
+    {
         //Preparamos la consulta con un marcador de posición (?) por seguridad de los datos
-        $query = $this->db->prepare("SELECT id_usuario, nombre, usuario, activo FROM usuarios WHERE id_usuario = ?"); 
+        $query = $this->db->prepare("SELECT id_usuario, nombre, usuario, activo FROM usuarios WHERE id_usuario = ?");
         //ejecutamos la consulta 
-        $query->execute([$id]); 
+        $query->execute([$id]);
 
         /**Como solo esperamos un resultado , usamos fecth() directamente si while 
          * PDO::FETCH_ASSOC nos devuelve ub objeto y no un arreglo 
@@ -64,9 +65,10 @@ class modeloUsuario
     }
 
 
-    public function editarUsuario($id, $nombre, $usuario, $password, $rol, $activo){
-        try{
-            $newHash = password_hash($password, PASSWORD_DEFAULT); 
+    public function editarUsuario($id, $nombre, $usuario, $password, $rol, $activo)
+    {
+        try {
+            $newHash = password_hash($password, PASSWORD_DEFAULT);
             $query = $this->db->prepare("UPDATE usuarios
                                         SET nombre = :nombre,
                                             usuario = :usuario,
@@ -75,17 +77,33 @@ class modeloUsuario
                                             activo = :activo
                                         WHERE id_usuario = :id");
             $query->bindParam(':nombre', $nombre);
-            $query->bindParam(':usuario',$usuario);
+            $query->bindParam(':usuario', $usuario);
             $query->bindParam(':password', $newHash);
             $query->bindParam(':rol', $rol);
-            $query->bindParam(':activo', $activo ,PDO::PARAM_INT);
+            $query->bindParam(':activo', $activo, PDO::PARAM_INT);
             $query->bindParam(':id', $id, PDO::PARAM_INT);
 
             return $query->execute();
-        }catch(PDOException $error){
+        } catch (PDOException $error) {
             return false;
         }
     }
-    
 
+    /**Funcion para eliminar un usuario de la bd */
+    /* public function eliminarUsuario($id){
+        $query = $this->db->prepare("DELETE FROM usuarios WHERE id_usuario = ?"); 
+        $resultado = $query->execute([$id]);
+        return $resultado; //true o false; 
+    }*/
+
+    public function eliminarUsuario($id)
+    {
+        try {
+            $query = $this->db->prepare("DELETE FROM usuarios WHERE id_usuario = ?");
+            $query->execute([$id]);
+            return true; // true si eliminó al menos 1 fila
+        } catch (PDOException $error) {
+            return false;
+        }
+    }
 }

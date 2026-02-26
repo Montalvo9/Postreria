@@ -53,5 +53,13 @@ switch ($opcion) {
     case 'editar-usuario':
         $datos = $db->editarUsuario($_POST['id'], $_POST['nombre'], $_POST['usuario'], $_POST['password'], $_POST['rol'], $_POST['estado']);
         echo $datos ? 1 : 0;
+        exit;
         break;
+    case 'eliminar-usuario':
+        $id = $_POST['idusuario'];
+        $datos = $db->eliminarUsuario($id);
+        echo $datos ? 1 :0 ;
+        exit;
+        break;
+        
 }

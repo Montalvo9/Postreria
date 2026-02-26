@@ -298,3 +298,48 @@ function editarUsuario() {
         }
     });
 }
+
+function eliminarUsuario(id) {
+    Swal.fire({
+        title: "¿Eliminar?",
+        text: "¿Seguro que desea eliminar el usuario?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#26b04d",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const datos = {
+                "opcion": "eliminar-usuario",
+                "idusuario": id,
+            };
+
+            $.ajax({
+                url: '/Postreria/controllers/controllerUsuario.php',
+                type: 'POST',
+                data: datos,
+                success: function(data) {
+                    if (data == 1) {
+                        Swal.fire({
+                            title: "Eliminado",
+                            text: "Usuario eliminado con éxito",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false
+
+                        });
+
+                        tablaControlUsuarios.ajax.reload(null, false);
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "No se pudo eliminar el usuario",
+                            icon: "error"
+                        });
+                    }
+                }
+            });
+        }
+    });
+}
