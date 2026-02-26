@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <form id="frmEditarUsuario">
-                    <input type="hidden" id="idUsuarioSelecionado">
+                    <input type="hidden" id="idUsuarioSeleccionado">
                     <!-- Nombre completo -->
                     <div class="form-group">
                         <label class="form-label" for="nombre">Nombre completo <span class="required">*</span></label>
@@ -60,22 +60,19 @@
 
                     <!-- ACTIONS -->
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="cancelarForm()">
+                        <button type="button" class="btn btn-secondary" onclick="cancelarFormEditar()">
                             <i class="fas fa-times"></i>
                             <span>Cancelar</span>
                         </button>
-                        <button type="button" class="btn btn-primary" id="submit-btn" onclick="registrarUsuario()">
+                        <button type="button" class="btn btn-primary" id="submit-btn" onclick="editarUsuario()">
                             <i class="fas fa-check"></i>
-                            <span id="submit-text">Crear usuario</span>
+                            <span id="submit-text">Editar usuario</span>
                         </button>
 
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-                <button type="button" class="btn btn-primary" onclick="editarUsuario()">Guardar cambios</button>
-            </div>
+            
         </div>
     </div>
 </div>

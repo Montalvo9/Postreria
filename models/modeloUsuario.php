@@ -62,4 +62,30 @@ class modeloUsuario
          */
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    public function editarUsuario($id, $nombre, $usuario, $password, $rol, $activo){
+        try{
+            $newHash = password_hash($password, PASSWORD_DEFAULT); 
+            $query = $this->db->prepare("UPDATE usuarios
+                                        SET nombre = :nombre,
+                                            usuario = :usuario,
+                                            password = :password,
+                                            rol = :rol,
+                                            activo = :activo
+                                        WHERE id_usuario = :id");
+            $query->bindParam(':nombre', $nombre);
+            $query->bindParam(':usuario',$usuario);
+            $query->bindParam(':password', $newHash);
+            $query->bindParam(':rol', $rol);
+            $query->bindParam(':activo', $activo ,PDO::PARAM_INT);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+
+            return $query->execute();
+        }catch(PDOException $error){
+            return false;
+        }
+    }
+    
+
 }

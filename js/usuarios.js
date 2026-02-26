@@ -1,5 +1,8 @@
 /*  Las siguientes funciones son para el boton de cancelar en e¿el formulario 
 de registrar a un usuario*/
+
+/*
+Esta funcin sirve para insertar  y la de abajo es para ambos (insertar y editar)
 function selectRole(element, rol) {
     document.querySelectorAll('.role-card').forEach(card => {
         card.classList.remove('selected');
@@ -7,6 +10,22 @@ function selectRole(element, rol) {
 
     element.classList.add('selected');
     document.getElementById('idrol').value = rol;
+}*/
+
+function selectRole(element, rol) {
+
+    const form = element.closest('form');
+
+    form.querySelectorAll('.role-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    element.classList.add('selected');
+
+    const hiddenInput = form.querySelector('input[name="rol"]');
+    if (hiddenInput) {
+        hiddenInput.value = rol;
+    }
 }
 
 function resetForm() {
@@ -23,6 +42,22 @@ function resetForm() {
 function cancelarForm() {
     resetForm();
 }
+
+function resetFormEditar() {
+    // ejemplo: limpiar todos los campos del formulario
+    document.getElementById('frmEditarUsuario').reset();
+
+    // si necesitas limpiar algo más manualmente:
+    document.querySelectorAll('.role-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    document.getElementById('rol-input').value = '';
+}
+
+function cancelarFormEditar() {
+    resetFormEditar()
+}
+
 
 /** ------------------------------------------------------------------*/
 /*  Las siguientes funciones son para editar el tipo de rol al editar el usuario*/
@@ -181,7 +216,7 @@ function registrarUsuario() {
  * y los traemos por id.
  */
 function obtenerDatos(id) {
-    document.getElementById("idUsuarioSelecionado").value = id;
+    document.getElementById("idUsuarioSeleccionado").value = id;
     $('#editarUsuarioModal').modal('show');
     //Llamamos a la función que se encarga de traer los datos de los usuarios paara mosrarlos en el modal
     obtenerDatosUsuario(id);
@@ -209,4 +244,57 @@ function obtenerDatosUsuario(id) {
             console.log(xhr.responseText); //para debuguear
         }
     })
+}
+
+function editarUsuario() {
+
+    const formulario = document.getElementById("frmEditarUsuario");
+
+    if (!formulario.checkValidity()) {
+        formulario.reportValidity();
+        return;
+    }
+
+    const idusuario = document.getElementById("idUsuarioSeleccionado").value;
+    const nombre = document.getElementById("editarNombre").value;
+    const usuario = document.getElementById("editarNombreDeUsuario").value;
+    const password = document.getElementById("editarPassword").value;
+    const rol = document.getElementById("editarRol").value;
+    const estado = document.getElementById("editarActivo").value;
+
+    let user = {
+        opcion: "editar-usuario",
+        id: idusuario,
+        nombre: nombre,
+        usuario: usuario,
+        password: password,
+        rol: rol,
+        estado: estado
+    };
+
+    console.log(user);
+
+    $.ajax({
+        url: "/Postreria/controllers/controllerUsuario.php",
+        type: 'POST',
+        data: user,
+        success: function(data) {
+            console.log("Respuesta del servidor:", data);
+            if (data == 1) {
+                Swal.fire({
+                    title: "Usuario editado correctamente",
+                    icon: "success",
+                    timer: 1500
+                });
+                $("#editarUsuarioModal").modal('hide');
+                tablaControlUsuarios.ajax.reload(null, false);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "¡Error al editar el usuario!",
+                });
+            }
+        }
+    });
 }
