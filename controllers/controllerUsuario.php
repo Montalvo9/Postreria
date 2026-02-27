@@ -33,13 +33,35 @@ switch ($opcion) {
         exit;
         break;
     case 'insertar-usuarios':
-        $nombre = $_POST['nombre'] ?? '';
-        $usuario = $_POST['usuario'] ?? '';
-        $password = $_POST['password'] ?? '';
-        $rol = $_POST['rol'] ?? '';
+
+        $nombre = trim($_POST['nombre'] ?? '');
+        $usuario = trim($_POST['usuario'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+        $rol = trim($_POST['rol'] ?? '');
+
+        // Validación obligatoria
+        if ($nombre === '' || $usuario === '' || $password === '' || $rol === '') {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Todos los campos son obligatorios"
+            ]);
+            exit;
+        }
 
         $resultado = $db->insertarUsuario($nombre, $usuario, $password, $rol);
-        echo $resultado ? 1 : 0;
+
+        if ($resultado) {
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Usuario registrado correctamente"
+            ]);
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Error al registrar usuario"
+            ]);
+        }
+
         exit;
         break;
     case 'obtenerDatosUsuario':
@@ -58,8 +80,7 @@ switch ($opcion) {
     case 'eliminar-usuario':
         $id = $_POST['idusuario'];
         $datos = $db->eliminarUsuario($id);
-        echo $datos ? 1 :0 ;
+        echo $datos ? 1 : 0;
         exit;
         break;
-        
 }

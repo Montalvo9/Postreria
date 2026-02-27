@@ -155,51 +155,54 @@ tablaControlUsuarios = $("#tablaUsuarios").DataTable({
 });
 
 function registrarUsuario() {
+
     const formulario = document.getElementById("formRegistroUsuario");
-    /**Validamos el formulario (que se hayan llenado todos los campos) */
-    if (!formulario.checkValidity()) { //checkValiditi devuelve true o false, cuando es true entra al if 
+
+    if (!formulario.checkValidity()) {
         formulario.reportValidity();
         return;
     }
 
-    //Recolectamos todos los datos
     let users = {
-        "opcion": "insertar-usuarios",
-        "nombre": document.getElementById("idnombre").value,
-        "usuario": document.getElementById("idusuario").value,
-        "password": document.getElementById("idpassword").value,
-        "rol": document.getElementById("idrol").value,
+        opcion: "insertar-usuarios",
+        nombre: document.getElementById("idnombre").value,
+        usuario: document.getElementById("idusuario").value,
+        password: document.getElementById("idpassword").value,
+        rol: document.getElementById("idrol").value,
     };
 
-    //Peticion AJAx
     $.ajax({
         url: '/Postreria/controllers/controllerUsuario.php',
         type: 'POST',
         data: users,
-        success: function(data) {
-            console.log("Datos que estan llegandp (que tiene data)", data);
-            //Cinvertimos data a numero por si el servidor devuelve un string 
-            if (parseInt(data) === 1) {
+        dataType: 'json', //  IMPORTANTE
+        success: function(response) {
+
+            console.log("Respuesta del servidor:", response);
+
+            if (response.status === "success") {
+
                 Swal.fire({
-                    title: "Usuario registrado con exito",
+                    title: response.mensaje,
                     icon: "success",
                     timer: 1500,
                     showConfirmButton: false
                 });
 
-                //limpia el formulario
                 formulario.reset();
 
-                //recargar la tabla
                 if (typeof tablaControlUsuarios !== 'undefined') {
                     tablaControlUsuarios.ajax.reload(null, false);
                 }
+
             } else {
+
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "El servidor no pudo procesar el registro",
+                    text: response.mensaje
                 });
+
             }
         },
         error: function() {
