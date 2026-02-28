@@ -30,4 +30,47 @@ switch ($opcion) {
         echo json_encode(["data" => $lista]);
         exit;
         break;
+    case "obtener-categoria": 
+        $datos = $db->obtenerCategoria();
+        header('Content-Type: application/json'); 
+        echo json_encode($datos); 
+        exit; 
+        break;
+    
+    case 'insertar-producto':
+
+    $nombre = trim($_POST['nombre'] ?? '');
+    $descripcion = trim($_POST['descripcion'] ?? ''); // Puede ir vacío
+    $precio = trim($_POST['precio'] ?? '');
+    $stock = trim($_POST['stock'] ?? '');
+    $categoria = trim($_POST['categoria'] ?? '');
+
+    // Validación obligatoria (descripcion NO se valida)
+    if ($nombre === '' || $precio === '' || $stock === '' || $categoria === '') {
+        echo json_encode([
+            "status" => "error",
+            "mensaje" => "Todos los campos excepto descripción son obligatorios"
+        ]);
+        exit;
+    }
+
+    $resultado = $db->insertarProducto($nombre, $descripcion, $precio, $stock, $categoria);
+
+    if ($resultado) {
+        echo json_encode([
+            "status" => "success",
+            "mensaje" => "Producto registrado correctamente"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "mensaje" => "Error al registrar producto"
+        ]);
+    }
+
+    exit;
+    break;
+    default:
+    echo json_encode(["data"=>[]]);
+    
 }

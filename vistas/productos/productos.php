@@ -29,7 +29,7 @@
                     <!-- Nombre del producto-->
                     <div class="form-group">
                         <label class="form-label" for="nombre">Nombre del producto <span class="required">*</span></label>
-                        <input type="text" class="form-input" id="nombre" placeholder="Ej: Fresas con crema" required />
+                        <input type="text" class="form-input" name="nombre" id="nombre" placeholder="Ej: Fresas con crema" required />
                     </div>
 
                     <!-- Descripción -->

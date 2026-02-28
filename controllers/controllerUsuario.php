@@ -83,4 +83,6 @@ switch ($opcion) {
         echo $datos ? 1 : 0;
         exit;
         break;
+    default:
+    echo json_encode(["data"=>[]]);
 }
