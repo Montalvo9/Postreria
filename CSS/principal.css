@@ -332,16 +332,41 @@ body {
 .product-card {
     background: white;
     border-radius: var(--radius);
-    padding: 16px 14px 14px;
+    padding: 10px;
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: var(--shadow);
     border: 2px solid transparent;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    min-height: 70px;
+    /* controla la altura */
+    text-align: center;
+}
+
+
+/* Nombre del producto */
+
+.product-card .product-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.2;
+    /* Evita que se corte feo */
+    word-break: break-word;
+}
+
+.product-card {
+    transition: 0.15s ease;
+}
+
+.product-card:active {
+    transform: scale(0.96);
+}
+
+.product-card.selected {
+    border: 2px solid #a855f7;
 }
 
 .product-card::before {
