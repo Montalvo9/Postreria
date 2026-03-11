@@ -391,10 +391,6 @@ body {
     opacity: 1;
 }
 
-.product-card:active {
-    transform: translateY(0);
-}
-
 .product-emoji {
     font-size: 36px;
     text-align: center;
@@ -1033,37 +1029,6 @@ body {
 }
 
 
-/* TOAST */
-
-.toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--dark);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 200;
-    white-space: nowrap;
-}
-
-.toast.show {
-    transform: translateX(-50%) translateY(0);
-}
-
-.toast.success {
-    background: #5A9E8A;
-}
-
-.toast.error {
-    background: #C44;
-}
-
-
 /* NOTA EN ITEM */
 
 .item-note-btn {
@@ -1119,4 +1084,24 @@ body {
     text-decoration: none;
     color: #333;
     font-weight: 500;
+}
+
+#toast-container>.toast-success {
+    background-color: #51A351 !important;
+    color: #fff !important;
+}
+
+#toast-container>.toast-error {
+    background-color: #BD362F !important;
+    color: #fff !important;
+}
+
+#toast-container>.toast-info {
+    background-color: #2F96B4 !important;
+    color: #fff !important;
+}
+
+#toast-container>.toast-warning {
+    background-color: #F89406 !important;
+    color: #fff !important;
 }

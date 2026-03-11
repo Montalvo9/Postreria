@@ -23,54 +23,65 @@ switch ($opcion) {
                 "accion" => "<div class='d-flex gap-1 justify-content-center'>
                              <button class='btn btn-sm btn-outline-primary' onclick='obtenerDatos({$value['id_producto']})'title='Editar'> <i class='fas fa-edit'></i> </button>
 
-                            <button class='btn btn-sm btn-outline-danger' onclick='eliminarUsuario({$value['id_producto']})'  title='Eliminar'> <i class='fas fa-trash'></i> </button>
+                            <button class='btn btn-sm btn-outline-danger' onclick='eliminarProducto({$value['id_producto']})'  title='Eliminar'> <i class='fas fa-trash'></i> </button>
                              </div>"
             ];
         }
         echo json_encode(["data" => $lista]);
         exit;
         break;
-    case "obtener-categoria": 
+    case "obtener-categoria":
         $datos = $db->obtenerCategoria();
-        header('Content-Type: application/json'); 
-        echo json_encode($datos); 
-        exit; 
+        header('Content-Type: application/json');
+        echo json_encode($datos);
+        exit;
         break;
-    
+
     case 'insertar-producto':
 
-    $nombre = trim($_POST['nombre'] ?? '');
-    $descripcion = trim($_POST['descripcion'] ?? ''); // Puede ir vacío
-    $precio = trim($_POST['precio'] ?? '');
-    $stock = trim($_POST['stock'] ?? '');
-    $categoria = trim($_POST['categoria'] ?? '');
+        $nombre = trim($_POST['nombre'] ?? '');
+        $descripcion = trim($_POST['descripcion'] ?? ''); // Puede ir vacío
+        $precio = trim($_POST['precio'] ?? '');
+        $stock = trim($_POST['stock'] ?? '');
+        $categoria = trim($_POST['categoria'] ?? '');
 
-    // Validación obligatoria (descripcion NO se valida)
-    if ($nombre === '' || $precio === '' || $stock === '' || $categoria === '') {
-        echo json_encode([
-            "status" => "error",
-            "mensaje" => "Todos los campos excepto descripción son obligatorios"
-        ]);
+        // Validación obligatoria (descripcion NO se valida)
+        if ($nombre === '' || $precio === '' || $stock === '' || $categoria === '') {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Todos los campos excepto descripción son obligatorios"
+            ]);
+            exit;
+        }
+
+        $resultado = $db->insertarProducto($nombre, $descripcion, $precio, $stock, $categoria);
+
+        if ($resultado) {
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Producto registrado correctamente"
+            ]);
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Error al registrar producto"
+            ]);
+        }
+
         exit;
-    }
-
-    $resultado = $db->insertarProducto($nombre, $descripcion, $precio, $stock, $categoria);
-
-    if ($resultado) {
-        echo json_encode([
-            "status" => "success",
-            "mensaje" => "Producto registrado correctamente"
-        ]);
-    } else {
-        echo json_encode([
-            "status" => "error",
-            "mensaje" => "Error al registrar producto"
-        ]);
-    }
-
-    exit;
-    break;
-    default:
-    echo json_encode(["data"=>[]]);
+        break;
     
+    case 'obtener-datos-producto':
+        //Atrapamos el id que viene del ajax , el que se guarda en el hidden del formulario
+        $id = $_POST['id_producto']; 
+
+        //llamamos al modelo
+        $datos = $db->obtenerDatosProducto($id);
+
+        //mandamos los datos en json para que el modal los pueda leer y mostrar
+        echo json_encode($datos);
+        exit;
+        break;
+    default:
+        echo json_encode(["data" => []]);
 }

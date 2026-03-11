@@ -112,6 +112,9 @@
     </div>
     <!-- Fin del contenido main que es el contenido o div donde estan ambos paneles (derecho e izquiero) -->
 
+    <!-- Modal para editar un producto -->
+     <?php include '../../componentes/modales/modalEditarProducto.php';  ?>
+
 </body>
 
 </html>

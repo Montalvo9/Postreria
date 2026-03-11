@@ -132,6 +132,52 @@ function registrarProducto() {
 
     });
 }
+
+/**Abrir el modal de editar productos */
+function obtenerDatos(id) {
+    //console.log(id);
+    document.getElementById('idProductoSeleccionado').value = id;
+    $('#editarProductoModal').modal('show');
+    obtenerDatosProducto(id);
+}
+
+function obtenerDatosProducto(id) {
+    $.ajax({
+        url: '/Postreria/controllers/controllerProducto.php',
+        type: 'POST',
+        data: {
+            opcion: 'obtener-datos-producto',
+            id_producto: id,
+        },
+        /**success es una función callback que 
+         * jQuery ejecuta automáticamente cuando el servidor responde correctamente.
+         * item solo es el nombre que le llamo a la respuesta que manda el server php*/
+        success: function(item) {
+            // console.log(item);
+
+            //Asignamos los valores a esos inuts del modal 
+            document.getElementById('editarNombre').value = item.nombre;
+            document.getElementById('editar-descripcion').value = item.descripcion;
+            document.getElementById('editar-precio').value = item.precio;
+            document.getElementById('editar-stock').value = item.stock;
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText); // para debug
+        }
+    });
+
+
+
+}
+
+
+/**FUNCION EDITAR PRODUCTO */
+function editarProducto() {
+    //  console.log('Probando la función editar');
+}
+
+
+
 //-------------------------------------------------
 
 let carrito = {
@@ -213,7 +259,7 @@ function renderCarrito() {
       </div>
     </div>
   `).join('');
-    //calcularTotales();
+    calcularTotales();
 }
 
 
@@ -253,12 +299,12 @@ function renderCarrito() {
       </div>
     </div>
   `).join('');
-    // calcularTotales();
+    calcularTotales();
 }
 
-
+/**Esta funcion es la que decremrta o incrementa los productos */
 function cambiarCantidad(id, delta) {
-
+    // delta es es la variable de cambio, cuando incrementamos o decrementamos el producto
     id = Number(id); //  aseguramos tipo número porque   id es de tipo number pero dentro de carrito es string 
 
     const item = carrito.items.find(p => Number(p.id) === id);
@@ -272,4 +318,97 @@ function cambiarCantidad(id, delta) {
     }
 
     renderCarrito();
+}
+
+/**Funcion para el descuento del carrito y hacerlo funcional */
+function toggleDescuento() {
+    const panel = document.getElementById('descuento-panel');
+    const arrow = document.getElementById('desc-arrow');
+    if (panel.style.display === 'none') {
+        panel.style.display = 'flex';
+        arrow.textContent = '▾';
+    } else {
+        panel.style.display = 'none';
+        arrow.textContent = '▸';
+    }
+}
+/**Selecionar el descuento si en porcentaje o en pesos (monto) */
+let descTipo = null; //descTipo  se refiere al tipo de descuento que se aplicara ya sea por monto o porcentaje
+
+
+function tipodesc(tipo) {
+    //console.log(tipo);
+    descTipo = tipo;
+    document.getElementById('btn-pct').classList.toggle('active', tipo === 'porcentaje');
+    document.getElementById('btn-monto').classList.toggle('active', tipo === 'monto');
+
+}
+/**Aplicar el descuento cuando le den click al boton de calcular */
+function aplicarDescuento() {
+    const valor = parseFloat(document.getElementById('desc-valor').value);
+
+    if (!valor || valor <= 0) {
+        showToast('¡Error!', 'Ingresa un descuento valido');
+        return;
+    }
+
+    carrito.descuento = {
+        tipo: descTipo,
+        descuento: valor
+    };
+
+    renderCarrito();
+    toastr.options = {
+        "positionClass": "toast-bottom-right"
+    };
+    toastr.success("Descuento aplicado");
+
+
+}
+
+
+/**Calcular los totales */
+function calcularTotales() {
+    let subtotal = 0;
+    let descuento = 0;
+
+    carrito.items.forEach(item => {
+        subtotal += item.precio * item.qty;
+    });
+
+    //Calcular si hay descuento 
+    if (carrito.descuento) {
+        if (carrito.descuento.tipo === "porcentaje") {
+            descuento = subtotal * (carrito.descuento.descuento / 100);
+        }
+
+        if (carrito.descuento.tipo === "monto") {
+            descuento = carrito.descuento.descuento;
+        }
+
+        // El descuento no debe ser mayor al subtotal 
+        if (descuento > subtotal) {
+            descuento = subtotal
+            toastr.warning("El descuento no puede ser mayor al subtotal");
+        }
+    }
+    let total = subtotal - descuento;
+
+    actualizarTotales(subtotal, descuento, total);
+}
+/** Esta funcion pintara los resultados de las operaciones */
+function actualizarTotales(subtotal, descuento, total) {
+
+    document.getElementById("subtotal-val").textContent = `$${subtotal.toFixed(2)}`;
+
+    const descRow = document.getElementById("desc-row");
+
+    if (descuento > 0) {
+        descRow.style.display = "flex";
+        document.getElementById("desc-display").textContent = `-$${descuento.toFixed(2)}`;
+    } else {
+        descRow.style.display = "none";
+    }
+
+    document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
 }

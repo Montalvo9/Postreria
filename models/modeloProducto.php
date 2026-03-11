@@ -40,32 +40,48 @@ class modeloProducto
     }
 
 
-    public function obtenerCategoria(){
-        try{
+    public function obtenerCategoria()
+    {
+        try {
             $query = $this->db->prepare("SELECT id_categoria, nombre FROM categorias WHERE activo = 1");
             $query->execute();
             $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
-        }catch(PDOException $error){
+        } catch (PDOException $error) {
             return false;
         }
     }
 
-    public function insertarProducto($nombre, $descripcion, $precio, $stock, $id_categoria){
-        try{
+    public function insertarProducto($nombre, $descripcion, $precio, $stock, $id_categoria)
+    {
+        try {
             $query = $this->db->prepare("INSERT INTO productos(nombre, descripcion, precio, stock, categoria)
                                         VALUES(:nombre,:descripcion,:precio,:stock,:categoria)");
             $query->execute([
-                ':nombre'=>$nombre,
-                ':descripcion'=>$descripcion,
-                ':precio'=>$precio,
-                ':stock'=>$stock,
-                ':categoria'=>$id_categoria
+                ':nombre' => $nombre,
+                ':descripcion' => $descripcion,
+                ':precio' => $precio,
+                ':stock' => $stock,
+                ':categoria' => $id_categoria
             ]);
             return true;
-
-        }catch(PDOException $error){
+        } catch (PDOException $error) {
             return false;
         }
     }
+
+    /**Funcion obtener datos para que se pinten en el modal y sea mas facil editar solo algunas cosas 
+     * y no editar todos los campos
+     */
+    public function obtenerDatosProducto($id)
+    {
+        /**Preparamos la consulta para traer los datos */
+        $query = $this->db->prepare("SELECT id_producto, nombre, descripcion, precio, stock, activo
+                                         FROM productos WHERE id_producto = ? ");
+        $query->execute([$id]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**Funcion para actualizar producto */
 }

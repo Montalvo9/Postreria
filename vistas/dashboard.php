@@ -3,8 +3,16 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../models/modeloProducto.php';
+/**Veridica si exoste esa variable de session que pasa al loguearse
+ * si no se loguea no hay variable y quiza quieren entrara directo con la url , ejemplo :
+ * http://localhost/Postreria/vistas/dashboard.php
+ */
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../index.php");
+    exit();
+}
 
+require_once __DIR__ . '/../models/modeloProducto.php';
 $modelo = new modeloProducto();
 $productos = $modelo->consulta();
 ?>
@@ -17,10 +25,9 @@ $productos = $modelo->consulta();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de administración</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/Postreria/CSS/principal.css">
-
     <link rel="stylesheet" href="/Postreria/librerias/bootstrap/CSS/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="/Postreria/CSS/principal.css">
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Postreria/librerias/libreriasGenerales.php'; ?>
 </head>
 
@@ -58,22 +65,22 @@ $productos = $modelo->consulta();
 
             <!-- GRID -->
             <div class="products-grid" id="products-grid">
-                
-                    <?php foreach ($productos as $producto): ?>
 
-                        <div class="product-card"
-                            data-id="<?= $producto['id_producto'] ?>"
-                            data-nombre="<?= $producto['nombre'] ?>"
-                            data-precio="<?= $producto['precio'] ?>"
-                            data-categoria="<?= strtolower($producto['nombre_categoria']) ?>">
+                <?php foreach ($productos as $producto): ?>
 
-                            <h4 class="product-name"><?= $producto['nombre'] ?></h4>
-                            <p class="product-price">$<?= number_format($producto['precio'], 2) ?></p>
+                    <div class="product-card"
+                        data-id="<?= $producto['id_producto'] ?>"
+                        data-nombre="<?= $producto['nombre'] ?>"
+                        data-precio="<?= $producto['precio'] ?>"
+                        data-categoria="<?= strtolower($producto['nombre_categoria']) ?>">
 
-                        </div>
+                        <h4 class="product-name"><?= $producto['nombre'] ?></h4>
+                        <p class="product-price">$<?= number_format($producto['precio'], 2) ?></p>
 
-                    <?php endforeach; ?>
-                
+                    </div>
+
+                <?php endforeach; ?>
+
             </div>
         </div>
 
@@ -91,10 +98,56 @@ $productos = $modelo->consulta();
                         <div class="empty-state-text">Agrega productos<br>al pedido</div>
                     </div>
                 </div>
+
+                <!--Descuento -->
+                <div class="discount-section">
+                    <div class="discount-toggle" onclick="toggleDescuento()">
+                        <span id="desc-arrow">▸</span> Aplicar descuento
+                    </div>
+                    <div class="descuento-panel" id="descuento-panel" style="display: none;">
+                        <div class="discount-row">
+                            <input type="number" name="desc-valor" id="desc-valor" placeholder="10" min="0">
+                            <div class="discount-type">
+                                <button id="btn-pct" class="active" onclick="tipodesc('porcentaje')">%</button>
+                                <button id="btn-monto" onclick="tipodesc('monto')">$</button>
+                            </div>
+                            <button class="discount-apply" onclick="aplicarDescuento()"> <i class="fa-solid fa-check"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--TOTALES -->
+                <div class="totals" id="totales">
+                    <div class="total-row"><span>Subtotal:</span><span id="subtotal-val">$0.00</span></div>
+                    <div class="total-row discount-row-display" id="desc-row" style="display:none"><span>🏷 Descuento</span><span id="desc-display">-$0.00</span></div>
+                    <div class="total-row grand"><span>Total</span><span id="total-val">$0.00</span></div>
+                </div>
+
+                <!-- ACCIONES (abrir el modal, limpiar, imprimir ticket, nuevo pedido, limpiar pedido-->
+
+                <div class="actions">
+                    <button class="btn-cobrar" onclick="abrirModalCobro()"><i class="fas fa-credit-card"></i> Cobrar</button>
+                    <div class="btn-row">
+                        <button class="btn-secondary" onclick="imprimirTicket()"><i class="fas fa-print"></i>Ticket</button>
+                        <button class="btn-secondary" onclick="nuevoPedido()"><i class="fas fa-file-circle-plus"></i>Nuevo</button>
+                        <button class="btn-secondary" onclick="limpiarPedido()"><i class="fas fa-trash"></i>Limpiar</button>
+                    </div>
+                </div>
+
+                <!--MODAL DE COBRO -->
             </div>
         </div>
     </div>
     </div>
+
+
+    <!-- Librería Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- Tu JS -->
     <script src="/Postreria/js/productos.js"></script>
 </body>
 
