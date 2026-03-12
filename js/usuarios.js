@@ -275,7 +275,7 @@ function editarUsuario() {
         estado: estado
     };
 
-    console.log(user);
+    // console.log(user);
 
     $.ajax({
         url: "/Postreria/controllers/controllerUsuario.php",

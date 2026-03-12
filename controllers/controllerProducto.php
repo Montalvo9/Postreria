@@ -70,10 +70,10 @@ switch ($opcion) {
 
         exit;
         break;
-    
+
     case 'obtener-datos-producto':
         //Atrapamos el id que viene del ajax , el que se guarda en el hidden del formulario
-        $id = $_POST['id_producto']; 
+        $id = $_POST['id_producto'];
 
         //llamamos al modelo
         $datos = $db->obtenerDatosProducto($id);
@@ -81,6 +81,47 @@ switch ($opcion) {
         //mandamos los datos en json para que el modal los pueda leer y mostrar
         echo json_encode($datos);
         exit;
+        break;
+    case 'editar-producto':
+        $id = $_POST['id_producto'] ?? '';   //lo id-producto es el nombre de la prpiedad del objeto que creeare en js.
+        $nombre = $_POST['nombre'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';  //Este puede ir vacio o null a la bd
+        $precio = $_POST['precio'] ?? '';
+        $stock = $_POST['stock'] ?? '';
+        $categoria = $_POST['categoria'] ?? '';
+        $activo = $_POST['activo'] ?? '';
+
+        // Validación obligatoria (descripcion NO se valida) los mando en json al ajax
+        if ($nombre === '' || $precio === '' || $stock === '' || $categoria === '' || $activo === '') {
+
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Todos los campos excepto descripción son obligatorios"
+            ]);
+
+
+            exit;
+        }
+        $resultado = $db->editarProducto($id, $nombre, $descripcion, $precio, $stock, $categoria, $activo);
+
+        if ($resultado) {
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Producto editado correctamente"
+            ]);
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Error al editar el producto"
+            ]);
+        }
+
+        exit;
+
+        //Este fragmento sirve si pero no valida que se ingresen los dato bien en el front por eso solo manda true o false (0, 1); 
+        /*$datos = $db->editarProducto($id, $nombre, $descripcion, $precio, $stock, $categoria, $activo); 
+        echo $datos ? 1: 0; */
+
         break;
     default:
         echo json_encode(["data" => []]);

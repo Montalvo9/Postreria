@@ -74,6 +74,30 @@ $(document).ready(function() {
     cargarCategoria();
 });
 
+/**CARGAR CATEGORIA PARA MODAL */
+function cargarCategoriaModal() {
+    $.post('/Postreria/controllers/controllerProducto.php', { opcion: 'obtener-categoria' },
+        function(response) {
+            console.log(response)
+            let select = $('#id_categoria_modal');
+            select.find('option:not(:first)').remove();
+
+            response.forEach(t => {
+                select.append(`<option value="${t.id_categoria}">${t.nombre}</option>`);
+            });
+
+        },
+        'json'
+    );
+}
+$(document).ready(function() {
+    cargarCategoriaModal();
+});
+
+
+
+
+/** */
 function registrarProducto() {
     const formulario = document.getElementById("frmRegistroProducto");
 
@@ -110,6 +134,8 @@ function registrarProducto() {
                     showConfirmButton: false
                 });
                 formulario.reset();
+
+
                 if (typeof tablaControlProductos !== 'undefined') {
                     tablaControlProductos.ajax.reload(null, false);
                 }
@@ -153,13 +179,17 @@ function obtenerDatosProducto(id) {
          * jQuery ejecuta automáticamente cuando el servidor responde correctamente.
          * item solo es el nombre que le llamo a la respuesta que manda el server php*/
         success: function(item) {
-            // console.log(item);
+            console.log("veamos que viene en el ", item);
 
             //Asignamos los valores a esos inuts del modal 
             document.getElementById('editarNombre').value = item.nombre;
             document.getElementById('editar-descripcion').value = item.descripcion;
             document.getElementById('editar-precio').value = item.precio;
             document.getElementById('editar-stock').value = item.stock;
+
+            // ESTAS FALTAN
+            $('#id_categoria_modal').val(item.categoria);
+            $('#editarActivo').val(item.activo);
         },
         error: function(xhr) {
             console.error(xhr.responseText); // para debug
@@ -174,6 +204,85 @@ function obtenerDatosProducto(id) {
 /**FUNCION EDITAR PRODUCTO */
 function editarProducto() {
     //  console.log('Probando la función editar');
+    /**Validar los campos obligatorios  */
+
+    const formulario = document.getElementById('frmEditarProducto');
+
+    if (!formulario.checkValidity()) { //si el formulario no es valido
+        formulario.reportValidity();
+        return;
+    }
+
+
+    /**Recoge los datos de los inputs para mandarlos al controller y este se lo mande a la consulta del 
+     * modelo y este ultimo haga la ejecución de la consulta
+     */
+
+    const id = document.getElementById('idProductoSeleccionado').value;
+    const nombre = document.getElementById('editarNombre').value;
+    const descripcion = document.getElementById('editar-descripcion').value;
+    const precio = document.getElementById('editar-precio').value;
+    const stock = document.getElementById('editar-stock').value;
+    const categoria = document.getElementById('id_categoria_modal').value;
+    const activo = document.getElementById('editarActivo').value;
+    //creamos el objeto para agruparlos y mandarlos por ajax
+    let productos = {
+        "opcion": "editar-producto",
+        "id_producto": id,
+        "nombre": nombre,
+        "descripcion": descripcion,
+        "precio": precio,
+        "stock": stock,
+        "categoria": categoria,
+        "activo": activo
+    };
+    /*console.log("Que tiene produc?");
+    console.log(product);*/
+
+    $.ajax({
+        url: '/Postreria/controllers/controllerProducto.php',
+        type: 'POST',
+        data: productos,
+        dataType: 'json',
+        success: function(response) {
+            //console.log(response); linea para probar 
+
+            if (response.status == "success") {
+                Swal.fire({
+                    title: response.mensaje,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                formulario.reset();
+                $('#editarProductoModal').modal('hide'); // cerrar modal
+                if (typeof tablaControlProductos !== 'undefined') {
+                    tablaControlProductos.ajax.reload(null, false);
+                }
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "error",
+                    text: response.mensaje
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: "error",
+                title: "Error de conexión",
+                text: "No se pudo conectar al servidor"
+            });
+        }
+
+
+    });
+
+
+
+
+
+
 }
 
 
@@ -410,5 +519,6 @@ function actualizarTotales(subtotal, descuento, total) {
         descRow.style.display = "none";
     }
 
+    document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
 }

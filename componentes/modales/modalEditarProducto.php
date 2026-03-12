@@ -8,7 +8,7 @@
 
             </div>
             <div class="modal-body">
-                <form>
+                <form id="frmEditarProducto">
                     <div class="form-section">
                         <input type="hidden" id="idProductoSeleccionado">
 
@@ -45,6 +45,16 @@
                             </select>
                         </div>
 
+                        <!-- ACTIVO -->
+                        <div class="form-group">
+                            <label class="form-label">ACTIVO</label>
+                            <select class="form-input" name="activo" id="editarActivo">
+                                <option value="">Selecionar</option>
+                                <option value="1">SI</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+
                         <!-- ACTIONS -->
                         <div class="form-actions">
                             <button type="button" class="btn btn-secondary" onclick="cancelarForm()">
@@ -52,7 +62,7 @@
                                 <span>Cancelar</span>
                             </button>
 
-                            <button type="button" class="btn btn-primary"  onclick="editarProducto()">
+                            <button type="button" class="btn btn-primary" onclick="editarProducto()">
                                 <i class="fas fa-check"></i>
                                 <span id="submit-text">Editar producto</span>
                             </button>

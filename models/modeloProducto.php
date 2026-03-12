@@ -30,7 +30,7 @@ class modeloProducto
         FROM productos p
         INNER JOIN categorias c 
             ON p.categoria = c.id_categoria
-        WHERE p.activo = 1
+        
     ");
 
         $query->execute();
@@ -76,7 +76,7 @@ class modeloProducto
     public function obtenerDatosProducto($id)
     {
         /**Preparamos la consulta para traer los datos */
-        $query = $this->db->prepare("SELECT id_producto, nombre, descripcion, precio, stock, activo
+        $query = $this->db->prepare("SELECT id_producto, nombre, descripcion, precio, stock, categoria, activo
                                          FROM productos WHERE id_producto = ? ");
         $query->execute([$id]);
 
@@ -84,4 +84,31 @@ class modeloProducto
     }
 
     /**Funcion para actualizar producto */
+    public function editarProducto($id, $nombre, $descripcion, $precio, $stock, $categoria, $activo)
+    {
+        try {
+            $query = $this->db->prepare(
+                "UPDATE productos
+            SET nombre = :nombre,
+                descripcion = :descripcion,
+                precio = :precio,
+                stock = :stock, 
+                categoria = :categoria,
+                activo = :activo
+                WHERE id_producto = :id"
+            );
+
+            $query->bindParam(':nombre', $nombre);
+            $query->bindParam(':descripcion', $descripcion);
+            $query->bindParam(':precio', $precio);
+            $query->bindParam(':stock', $stock);
+            $query->bindParam(':categoria', $categoria);
+            $query->bindParam(':activo', $activo, PDO::PARAM_INT);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+
+            return $query->execute();
+        } catch (PDOException $error) {
+            return false;
+        }
+    }
 }
