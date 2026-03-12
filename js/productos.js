@@ -78,7 +78,7 @@ $(document).ready(function() {
 function cargarCategoriaModal() {
     $.post('/Postreria/controllers/controllerProducto.php', { opcion: 'obtener-categoria' },
         function(response) {
-            console.log(response)
+            // console.log(response)
             let select = $('#id_categoria_modal');
             select.find('option:not(:first)').remove();
 
@@ -179,7 +179,7 @@ function obtenerDatosProducto(id) {
          * jQuery ejecuta automáticamente cuando el servidor responde correctamente.
          * item solo es el nombre que le llamo a la respuesta que manda el server php*/
         success: function(item) {
-            console.log("veamos que viene en el ", item);
+            //console.log("veamos que viene en el ", item);
 
             //Asignamos los valores a esos inuts del modal 
             document.getElementById('editarNombre').value = item.nombre;
@@ -277,12 +277,72 @@ function editarProducto() {
 
 
     });
+}
 
+/**FUNCION ELIMINAR PRODUCTO */
 
+function eliminarProducto(id) {
+    Swal.fire({
+        title: "¿Eliminar?",
+        text: "¿Seguro que deseas eliminar este producto?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#26b04d",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "No quiero eliminar"
+    }).then((respuesta) => {
 
+        if (respuesta.isConfirmed) {
 
+            const datos = {
+                opcion: 'eliminar-producto',
+                id_producto: id
+            };
 
+            $.ajax({
+                url: '/Postreria/controllers/controllerProducto.php',
+                type: 'POST',
+                data: datos,
 
+                success: function(data) {
+
+                    if (data == "1") {
+
+                        Swal.fire({
+                            title: "Eliminado",
+                            text: "Producto eliminado con éxito",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+
+                        tablaControlProductos.ajax.reload(null, false);
+
+                    } else {
+
+                        Swal.fire({
+                            title: "Error",
+                            text: "No se pudo eliminar el producto",
+                            icon: "error"
+                        });
+
+                    }
+                },
+
+                error: function() {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Error en la comunicación con el servidor",
+                        icon: "error"
+                    });
+                }
+
+            });
+
+        }
+
+    });
 }
 
 
@@ -519,6 +579,7 @@ function actualizarTotales(subtotal, descuento, total) {
         descRow.style.display = "none";
     }
 
+    document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
 }

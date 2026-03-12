@@ -111,4 +111,11 @@ class modeloProducto
             return false;
         }
     }
+
+    public function eliminarProducto($id){
+        $query = $this->db->prepare("DELETE FROM productos WHERE id_producto = ?"); 
+        $resultado = $query->execute([$id]);
+
+        return $resultado;
+    }
 }

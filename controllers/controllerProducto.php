@@ -123,6 +123,12 @@ switch ($opcion) {
         echo $datos ? 1: 0; */
 
         break;
+    case 'eliminar-producto':
+        $id = $_POST['id_producto']; 
+
+        $datos = $db->eliminarProducto($id); 
+        echo $datos ? 1 : 0;
+        break;  
     default:
         echo json_encode(["data" => []]);
 }
