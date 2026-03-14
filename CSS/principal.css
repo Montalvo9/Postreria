@@ -332,17 +332,25 @@ body {
 .product-card {
     background: white;
     border-radius: var(--radius);
-    padding: 10px;
+    padding: 15px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: var(--shadow);
     border: 2px solid transparent;
     display: flex;
+    flex-direction: column;
+    /* importante */
     align-items: center;
-    justify-content: center;
-    min-height: 70px;
-    /* controla la altura */
+    justify-content: flex-start;
+    min-height: 120px;
+    /* más alto para que se vea uniforme */
     text-align: center;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    /* efecto hover más profesional */
 }
 
 
@@ -353,7 +361,6 @@ body {
     font-weight: 500;
     margin: 0;
     line-height: 1.2;
-    /* Evita que se corte feo */
     word-break: break-word;
 }
 
