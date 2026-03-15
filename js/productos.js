@@ -349,6 +349,7 @@ function eliminarProducto(id) {
 
 //-------------------------------------------------
 
+let metodoPago = "efectivo";
 let carrito = {
     items: [],
     descuento: null
@@ -486,6 +487,11 @@ function cambiarCantidad(id, delta) {
         carrito.items = carrito.items.filter(p => Number(p.id) !== id);
     }
 
+    // Si después de filtrar el carrito está vacío, forzamos los totales a 0
+    if (carrito.items.length === 0) {
+        actualizarTotales(0, 0, 0);
+    }
+
     renderCarrito();
 }
 
@@ -564,6 +570,8 @@ function calcularTotales() {
     let total = subtotal - descuento;
 
     actualizarTotales(subtotal, descuento, total);
+
+    return total;
 }
 /** Esta funcion pintara los resultados de las operaciones */
 function actualizarTotales(subtotal, descuento, total) {
@@ -582,4 +590,87 @@ function actualizarTotales(subtotal, descuento, total) {
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
+}
+
+
+/**Funcion para abrir el modal cobro */
+
+function abrirModalCobro() {
+    if (!carrito.items.length) {
+        toastr.error("El pedido esta vacio", "error");
+        return; //el return detiene la funcion (si no existiera aunque este vacio la función aria el calculo)
+    }
+
+
+
+
+    const total = calcularTotales();
+
+    document.getElementById('modal-total-amount').textContent = `$${total.toFixed(2)}`;
+    document.getElementById('modal-cobro').classList.add('show');
+    document.getElementById('pago-con').value = '';
+    document.getElementById('cambio-row').style.display = 'none';
+
+
+}
+
+/**Funcion cerrar modal 
+ * Cierra el modal al dar clik en el boton Cancelar
+ */
+
+function cerrarModal() {
+    document.getElementById('modal-cobro').classList.remove('show');
+}
+
+/**Funcion de selecionar pago */
+function selectPago(tipo) {
+    metodoPago = tipo;
+    ['efectivo', 'tarjeta', 'transferencia'].forEach(t => {
+        document.getElementById(`pay-${t}`).classList.toggle('selected', t === tipo);
+    });
+    document.getElementById('cash-section').style.display = tipo === 'efectivo' ? 'block' : 'none';
+}
+
+/**Calcular el cambio */
+
+function calculaCambio() {
+    const total = calcularTotales();
+    const pagoCon = parseFloat(document.getElementById('pago-con').value) || 0;
+    const cambioRow = document.getElementById('cambio-row')
+
+    if (pagoCon >= total) {
+        cambioRow.style.display = 'flex';
+        document.getElementById('cambio-val').textContent = `$${(pagoCon - total).toFixed(2)}`;
+    } else {
+        cambioRow.style.display = 'none';
+    }
+
+}
+
+
+/**Confiramar cobro */
+
+function confirmarCobro() {
+    if (metodoPago === "efectivo") {
+        const total = calcularTotales();
+        const pagoCon = parseFloat(document.getElementById('pago-con').value) || 0;
+        if (pagoCon < total) { toastr.error('El pago es insuficiente', 'error'); return; }
+    }
+    cerrarModal();
+    limpiarCarrito();
+
+
+    toastr.success("Venta realizada");
+
+
+}
+
+function limpiarCarrito() {
+
+    carrito.items = []; // vacía los productos
+    carrito.descuento = null; // quita el descuento si existe
+    actualizarTotales(0, 0, 0);
+
+    renderCarrito(); // vuelve a pintar el carrito vacío
+
 }

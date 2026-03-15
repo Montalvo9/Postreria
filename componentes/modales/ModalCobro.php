@@ -1,5 +1,5 @@
 <div class="modal-overlay" id="modal-cobro">
-    <div class="modal">
+    <div class="modal-cobrar">
         <div class="modal-title">Cobrar pedido</div>
         <div class="modal-sub" id="modal-sub-mesa">Mesa 1</div>
         <div class="modal-total-display">
@@ -21,7 +21,7 @@
             <div class="cash-label">Pago con</div>
             <div class="cash-input-wrap">
                 <span class="cash-prefix">$</span>
-                <input type="number" id="pago-con" placeholder="0.00" oninput="calcCambio()" />
+                <input type="number" id="pago-con" placeholder="0.00" oninput="calculaCambio()" />
             </div>
             <div class="cambio-row" id="cambio-row" style="display:none">
                 <span class="cambio-label">💚 Cambio</span>
