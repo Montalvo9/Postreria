@@ -15,6 +15,7 @@ if (!isset($_SESSION['usuario'])) {
 require_once __DIR__ . '/../models/modeloProducto.php';
 $modelo = new modeloProducto();
 $productos = $modelo->consulta();
+$categorias = $modelo->obtenerCategoria();
 ?>
 
 <!DOCTYPE html>
@@ -48,14 +49,25 @@ $productos = $modelo->consulta();
             </div>
             <!-- CATEGORÍAS -->
             <div class="cat-bar">
-                <button class="cat-btn active" onclick="filtrarCat('todos', this)"><span class="cat-emoji">🌸</span>Todo</button>
-                <button class="cat-btn" onclick="filtrarCat('crepas', this)"><span class="cat-emoji">🫔</span>Crepas</button>
-                <button class="cat-btn" onclick="filtrarCat('fresas', this)"><span class="cat-emoji">🍓</span>Fresas</button>
-                <button class="cat-btn" onclick="filtrarCat('helados', this)"><span class="cat-emoji">🍦</span>Helados</button>
-                <button class="cat-btn" onclick="filtrarCat('bebidas', this)"><span class="cat-emoji">🥤</span>Bebidas</button>
-                <button class="cat-btn" onclick="filtrarCat('waffles', this)"><span class="cat-emoji">🧇</span>Waffles</button>
-                <button class="cat-btn" onclick="filtrarCat('postres', this)"><span class="cat-emoji">🍮</span>Postres</button>
+                <!-- En HTML + JavaScript, this significa "este elemento que se está clickeando". -->
+                <button class="cat-btn active" onclick="filtrarCat('todos', this)">
+                    <span class="cat-emoji">🌸</span>Todo
+                </button>
+                <!-- Recorremos las categorias que vienen de la consulta a la bd -->
+                <?php foreach ($categorias as $cat): ?>
+
+                    <button class="cat-btn"
+                        onclick="filtrarCat('<?= strtolower($cat['nombre']) ?>', this)">
+
+                        <span class="cat-emoji"><?= $cat['icono'] ?></span>
+                        <?= $cat['nombre'] ?>
+
+                    </button>
+
+                <?php endforeach; ?>
+
             </div>
+
 
             <!-- BÚSQUEDA -->
             <div class="search-wrap">
@@ -143,7 +155,7 @@ $productos = $modelo->consulta();
             </div>
         </div>
     </div>
-    
+
 
 
     <!-- Librería Toastr -->

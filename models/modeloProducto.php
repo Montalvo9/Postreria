@@ -43,7 +43,7 @@ class modeloProducto
     public function obtenerCategoria()
     {
         try {
-            $query = $this->db->prepare("SELECT id_categoria, nombre FROM categorias WHERE activo = 1");
+            $query = $this->db->prepare("SELECT id_categoria, nombre, icono FROM categorias WHERE activo = 1");
             $query->execute();
             $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;

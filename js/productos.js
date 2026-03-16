@@ -674,3 +674,27 @@ function limpiarCarrito() {
     renderCarrito(); // vuelve a pintar el carrito vacío
 
 }
+
+function filtrarCat(categoria, boton) {
+
+    const productos = document.querySelectorAll(".product-card");
+
+    productos.forEach(producto => {
+
+        const catProducto = producto.dataset.categoria;
+
+        if (categoria === "todos" || catProducto === categoria) {
+            producto.style.display = "block";
+        } else {
+            producto.style.display = "none";
+        }
+
+    });
+
+    // cambiar botón activo
+    document.querySelectorAll(".cat-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    boton.classList.add("active");
+}
