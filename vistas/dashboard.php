@@ -138,12 +138,12 @@ $productos = $modelo->consulta();
                 </div>
 
                 <!--MODAL DE COBRO -->
-            
-                    <?php include __DIR__ . '/../componentes/modales/ModalCobro.php'; ?>
+
+                <?php include __DIR__ . '/../componentes/modales/ModalCobro.php'; ?>
             </div>
         </div>
     </div>
-    </div>
+    
 
 
     <!-- Librería Toastr -->

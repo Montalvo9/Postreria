@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 
 
-</header>
+
 <header class="header">
     <div class="header-left">
         <div class="header-logo">Dulce R<span>&</span>ncón</div>
@@ -21,6 +21,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Productos  -->
             <a href="/Postreria/vistas/productos/productos.php" class="nav-link active"><i class="fa-solid fas fa-box" style="font-size: 15px;"></i> Productos</a>
 
+            <!-- Categorias -->
+             
+            <a href="#" class="nav-link active"><i class="fa-solid fas fa-th" style="font-size: 15px;"></i> Categorias</a>
             <a href="#" class="nav-link active"><i class="fas fa-file-alt" style="font-size: 15px;"></i>Reportes</a>
             <a href="/Postreria/controllers/cerrarSesion.php" class="nav-link active"><i class="fas fa-sign-out-alt" style="font-size: 15px;"></i> Salir</a>
         </nav>
