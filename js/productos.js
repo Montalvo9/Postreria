@@ -355,7 +355,7 @@ let carrito = {
     descuento: null
 };
 
-let categoriaAcual = "todos";
+let categoriaActual = "todos";
 let busquedaActual = "";
 
 
@@ -680,21 +680,12 @@ function limpiarCarrito() {
 
 }
 
+/*Muestra los productos por categoria*/
+
 function filtrarCat(categoria, boton) {
+    //console.log("La ategoria oprimida es", categoria)
+    categoriaActual = categoria;
 
-    const productos = document.querySelectorAll(".product-card");
-
-    productos.forEach(producto => {
-
-        const catProducto = producto.dataset.categoria;
-
-        if (categoria === "todos" || catProducto === categoria) {
-            producto.style.display = "block";
-        } else {
-            producto.style.display = "none";
-        }
-
-    });
 
     // cambiar botón activo
     document.querySelectorAll(".cat-btn").forEach(btn => {
@@ -702,22 +693,36 @@ function filtrarCat(categoria, boton) {
     });
 
     boton.classList.add("active");
+    aplicarFiltros();
 }
 
 
 /**FUNCION PARA BUSCAR LOS PRODUCTOS */
 function buscarProducto(valor) {
-    valor = valor.toLowerCase();
+
+    busquedaActual = valor.toLowerCase();
+
+    aplicarFiltros();
+}
+
+function aplicarFiltros() {
 
     const productos = document.querySelectorAll(".product-card");
 
-    //recorremos esos productos 
     productos.forEach(producto => {
+
         const nombre = producto.dataset.nombre.toLowerCase();
-        if (nombre.includes(valor)) {
+        const categoria = producto.dataset.categoria;
+
+        const coincideBusqueda = nombre.includes(busquedaActual);
+        const coincideCategoria = categoriaActual === "todos" || categoria === categoriaActual;
+
+        if (coincideBusqueda && coincideCategoria) {
             producto.style.display = "block";
         } else {
             producto.style.display = "none";
         }
+
     });
+
 }
