@@ -354,6 +354,11 @@ let carrito = {
     items: [],
     descuento: null
 };
+
+let categoriaAcual = "todos";
+let busquedaActual = "";
+
+
 document.querySelectorAll(".product-card").forEach(card => {
     card.addEventListener("click", function() {
 
@@ -697,4 +702,22 @@ function filtrarCat(categoria, boton) {
     });
 
     boton.classList.add("active");
+}
+
+
+/**FUNCION PARA BUSCAR LOS PRODUCTOS */
+function buscarProducto(valor) {
+    valor = valor.toLowerCase();
+
+    const productos = document.querySelectorAll(".product-card");
+
+    //recorremos esos productos 
+    productos.forEach(producto => {
+        const nombre = producto.dataset.nombre.toLowerCase();
+        if (nombre.includes(valor)) {
+            producto.style.display = "block";
+        } else {
+            producto.style.display = "none";
+        }
+    });
 }
