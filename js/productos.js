@@ -580,6 +580,10 @@ function calcularTotales() {
 }
 /** Esta funcion pintara los resultados de las operaciones */
 function actualizarTotales(subtotal, descuento, total) {
+    // Asegurar que siempre sean números
+    subtotal = Number(subtotal) || 0;
+    descuento = Number(descuento) || 0;
+    total = Number(total) || 0;
 
     document.getElementById("subtotal-val").textContent = `$${subtotal.toFixed(2)}`;
 
@@ -593,10 +597,7 @@ function actualizarTotales(subtotal, descuento, total) {
     }
 
     document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
-    document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
-    document.getElementById("total-val").textContent = `$${total.toFixed(2)}`;
 }
-
 
 /**Funcion para abrir el modal cobro */
 
