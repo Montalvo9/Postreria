@@ -700,13 +700,16 @@ function confirmarCobro() {
 
             } else {
 
-                toastr.error(response.mensaje);
+                toastr.warning(response.mensaje);
 
             }
 
         },
-        error: function() {
-            toastr.error("Error al registrar la venta");
+        error: function(xhr, status, error) {
+            // Solo entra aquí si el PHP EXPLOTÓ (Error 500) o el JSON está roto
+            console.error("Error técnico:", error);
+            console.log("Respuesta del servidor:", xhr.responseText);
+            toastr.error("Error crítico en el servidor. Revisa la consola.");
         }
     });
 

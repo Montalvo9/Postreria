@@ -18,6 +18,19 @@ class modeloVentas
     {
         try {
 
+            /**Validamos que exista productos en el stock, si no hay stock entonces venderan productos que ya no se tiene */
+
+            foreach ($items as $item) {
+                $sqlCheck = "SELECT stock, nombre FROM productos WHERE id_producto = :id";
+                $stmCheck = $this->db->prepare($sqlCheck);
+                $stmCheck->execute([':id' => $item['id']]);
+                $producto = $stmCheck->fetch(PDO::FETCH_ASSOC);
+
+                if (!$producto || $producto['stock'] < $item['qty']) {
+                    //Si no hay suficiente stock lanzamos una excepción para ir al catch
+                    throw new Exception("Stock insuficiente para: " . ($producto['nombre'] ?? 'Producto desconocido'));
+                }
+            }
             // Iniciamos una TRANSACCIÓN
             // Esto sirve para que si algo falla, se deshaga TODO
             // (venta, detalle y actualización de stock)
@@ -140,19 +153,15 @@ class modeloVentas
             $this->db->commit();
 
             return true;
-        } catch (PDOException $e) {
+        } catch (Exception $e) { // Cambia PDOException por Exception para atrapar el stock
+            // 1. Un solo rollback bien validado
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
 
-            // ===============================
-            // SI ALGO FALLA
-            // ===============================
-
-            // Se cancelan todos los cambios hechos
-            $this->db->rollBack();
-
-            // Mostramos el error (solo para desarrollo)
-            echo $e->getMessage();
-
-            return false;
+             
+            // Devolvemos el mensaje para que el controlador lo reciba.
+            return $e->getMessage();
         }
     }
 }

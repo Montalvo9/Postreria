@@ -28,7 +28,7 @@ switch ($opcion) {
         $resultado = $db->registrarVenta($total, $pago, $cambio, $metodo_pago, $items);
 
         //Responemos al frontend 
-        if ($resultado) {
+        if ($resultado === true)  {
             echo json_encode([
                 "status" => "success",
                 "mensaje" => "Venta registrada correctamente"
@@ -36,7 +36,7 @@ switch ($opcion) {
         } else {
             echo json_encode([
                 "status" => "error",
-                "mensaje" => "Error al registrar la venta"
+                "mensaje" =>  $resultado
             ]);
         }
 
