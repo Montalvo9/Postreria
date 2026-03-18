@@ -6,30 +6,40 @@ include './controllers/controlllerLogin.php';
 $error = false;
 
 if (isset($_POST['ingresar'])) {
-    $usuario = $_POST['usuario']; // Lo que trae el $_POST son los name del html no los id, os id son para js y css
-    $password = $_POST['password'];
+    $usuarioInput = $_POST['usuario']; 
+    $passwordInput = $_POST['password'];
 
     $controller = new Login();
     $json = $controller->obtenerUsuario();
-    $usuarios = json_decode($json);  //transformamos con ese sitring que viene el json en un array de objetos php para poder recorrerlos
+    
+    // El segundo parámetro 'true' convierte el JSON en un Arreglo Asociativo
+    $usuarios = json_decode($json, true); 
 
-    foreach ($usuarios as $value) {
-        if ($value->usuario == $usuario && password_verify($password, $value->password)) {
-            // Guardamos en la sesión el nombre del usuario que viene de la BD.
-            // La clave 'usuario' es solo el nombre de la variable de sesión, no el campo de la BD.
-            $_SESSION['usuario'] = $value->nombre;
+    if (is_array($usuarios)) {
+        foreach ($usuarios as $value) {
+            // Comparamos usando la sintaxis de arreglo ['']
+            if ($value['usuario'] == $usuarioInput && password_verify($passwordInput, $value['password'])) {
+                
+                // Guardamos los datos asegurándonos de que existan
+                $_SESSION['id_usuario'] = $value['id_usuario'] ?? null;
+                $_SESSION['usuario']    = $value['nombre'] ?? 'Sin Nombre';
+                $_SESSION['rol']        = $value['rol'] ?? 'Sin Rol';
 
-            // Guardamos en la sesión el rol del usuario que viene de la BD.
-            // La clave 'rol' es el identificador que usamos en la sesión.
-            $_SESSION['rol'] = $value->rol;
-
-            header('Location: ./vistas/dashboard.php');
-            exit;
+                // Verificación de seguridad antes de redireccionar
+                if ($_SESSION['id_usuario'] !== null) {
+                    session_write_close(); // Fuerza el guardado de la sesión
+                    header('Location: ./vistas/dashboard.php');
+                    exit;
+                } else {
+                    // Si llegamos aquí, el usuario existe pero el ID no vino en el SELECT *
+                    $error = true;
+                    break; 
+                }
+            }
         }
     }
     $error = true;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">

@@ -1,0 +1,158 @@
+<?php
+session_start();
+include_once('../config/connection_postreria.php');
+
+class modeloVentas
+{
+    private $modelo;
+    private $db;
+
+    public function __construct()
+    {
+        $this->modelo = array();
+        $this->db = PostreriaConnection::ConnectionPostreria();
+    }
+
+
+    public function registrarVenta($total, $pago, $cambio, $metodo_pago, $items)
+    {
+        try {
+
+            // Iniciamos una TRANSACCIÓN
+            // Esto sirve para que si algo falla, se deshaga TODO
+            // (venta, detalle y actualización de stock)
+            $this->db->beginTransaction();
+
+
+            // ==============================
+            // 1️ INSERTAR LA VENTA PRINCIPAL
+            // ==============================
+
+            // Preparamos la consulta para insertar la venta
+            $sqlVenta = "INSERT INTO ventas (id_usuario, total, pago, cambio, metodo_pago)
+                     VALUES (:id_usuario, :total, :pago, :cambio, :metodo_pago)";
+
+            $stmtVenta = $this->db->prepare($sqlVenta);
+
+
+            $id_usuario = $_SESSION['id_usuario'] ?? null;
+            if (!$id_usuario) {
+                die(json_encode(["status" => "error", "mensaje" => "Sesión no válida"]));
+            }
+
+            // Enlazamos los parámetros con los valores que llegan
+            $stmtVenta->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+            $stmtVenta->bindParam(':total', $total);
+            $stmtVenta->bindParam(':pago', $pago);
+            $stmtVenta->bindParam(':cambio', $cambio);
+            $stmtVenta->bindParam(':metodo_pago', $metodo_pago);
+
+            // Ejecutamos la consulta
+            $stmtVenta->execute();
+
+            // Obtenemos el ID de la venta recién insertada
+            // Esto es muy importante para poder registrar el detalle
+            $id_venta = $this->db->lastInsertId();
+
+
+
+            // ====================================
+            // 2️ PREPARAMOS LA INSERCIÓN DEL DETALLE
+            // ====================================
+
+            // Consulta para guardar cada producto vendido
+            $sqlDetalle = "INSERT INTO detalle_ventas
+                       (id_venta, id_producto, cantidad, precio, subtotal)
+                       VALUES (:id_venta, :id_producto, :cantidad, :precio, :subtotal)";
+
+            $stmtDetalle = $this->db->prepare($sqlDetalle);
+
+
+
+            // ====================================
+            // 3️ PREPARAMOS LA ACTUALIZACIÓN DE STOCK
+            // ====================================
+
+            // Cada vez que se vende un producto se descuenta del stock
+            $sqlStock = "UPDATE productos 
+                     SET stock = stock - :cantidad 
+                     WHERE id_producto = :id_producto";
+
+            $stmtStock = $this->db->prepare($sqlStock);
+
+
+
+            // ====================================
+            // 4️ RECORREMOS LOS PRODUCTOS DEL CARRITO
+            // ====================================
+
+            // $items es el carrito que viene desde JS
+            // Ejemplo:
+            // [
+            //   {id:33, nombre:"Hamburguesa", precio:60, qty:1}
+            // ]
+
+            foreach ($items as $item) {
+
+                // Guardamos los datos del producto en variables
+                $id_producto = $item['id'];     // id del producto
+                $cantidad = $item['qty'];       // cantidad vendida
+                $precio = $item['precio'];      // precio unitario
+
+                // Calculamos el subtotal
+                $subtotal = $cantidad * $precio;
+
+
+
+                // ===============================
+                // INSERTAMOS EL DETALLE DE VENTA
+                // ===============================
+
+                $stmtDetalle->bindParam(':id_venta', $id_venta, PDO::PARAM_INT);
+                $stmtDetalle->bindParam(':id_producto', $id_producto, PDO::PARAM_INT);
+                $stmtDetalle->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
+                $stmtDetalle->bindParam(':precio', $precio);
+                $stmtDetalle->bindParam(':subtotal', $subtotal);
+
+                // Ejecutamos el insert
+                $stmtDetalle->execute();
+
+
+
+                // ===============================
+                // ACTUALIZAMOS EL STOCK
+                // ===============================
+
+                $stmtStock->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
+                $stmtStock->bindParam(':id_producto', $id_producto, PDO::PARAM_INT);
+
+                // Ejecutamos la actualización
+                $stmtStock->execute();
+            }
+
+
+
+            // ===============================
+            // 5️ CONFIRMAMOS LA TRANSACCIÓN
+            // ===============================
+
+            // Si todo salió bien se guardan todos los cambios
+            $this->db->commit();
+
+            return true;
+        } catch (PDOException $e) {
+
+            // ===============================
+            // SI ALGO FALLA
+            // ===============================
+
+            // Se cancelan todos los cambios hechos
+            $this->db->rollBack();
+
+            // Mostramos el error (solo para desarrollo)
+            echo $e->getMessage();
+
+            return false;
+        }
+    }
+}

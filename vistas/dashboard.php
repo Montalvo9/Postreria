@@ -12,6 +12,7 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
+
 require_once __DIR__ . '/../models/modeloProducto.php';
 $modelo = new modeloProducto();
 $productos = $modelo->consulta();

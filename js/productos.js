@@ -657,17 +657,58 @@ function calculaCambio() {
 /**Confiramar cobro */
 
 function confirmarCobro() {
+
+    let total = calcularTotales();
+    let pagoCon = parseFloat(document.getElementById('pago-con').value) || 0;
+    let cambio = 0;
+
     if (metodoPago === "efectivo") {
-        const total = calcularTotales();
-        const pagoCon = parseFloat(document.getElementById('pago-con').value) || 0;
-        if (pagoCon < total) { toastr.error('El pago es insuficiente', 'error'); return; }
+
+        if (pagoCon < total) {
+            toastr.error('El pago es insuficiente', 'Error');
+            return;
+        }
+
+        cambio = pagoCon - total;
     }
-    cerrarModal();
-    limpiarCarrito();
 
+    let venta = {
+        opcion: "guardar-venta",
+        total: total,
+        pago: pagoCon,
+        cambio: cambio,
+        metodo_pago: metodoPago,
+        items: JSON.stringify(carrito.items) //mandamos e onjeto en json( controller lo recibe)
+    };
 
-    toastr.success("Venta realizada");
+    //console.log(venta); 
 
+    $.ajax({
+        url: '/Postreria/controllers/controllerVentas.php',
+        type: 'POST',
+        data: venta,
+        dataType: 'json',
+
+        success: function(response) {
+            console.log("Que trae el response", response)
+
+            if (response.status === "success") {
+
+                cerrarModal();
+                limpiarCarrito();
+                toastr.success(response.mensaje);
+
+            } else {
+
+                toastr.error(response.mensaje);
+
+            }
+
+        },
+        error: function() {
+            toastr.error("Error al registrar la venta");
+        }
+    });
 
 }
 
