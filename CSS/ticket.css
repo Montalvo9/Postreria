@@ -1,0 +1,32 @@
+/* Estilo para impresora térmica */
+
+body {
+    font-family: Arial, sans-serif;
+    width: 80mm;
+    /* Ancho estándar de ticket */
+    margin: 0;
+    padding: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.linea {
+    border-top: 1px dashed black;
+    margin: 10px 0;
+}
+
+
+/* Ocultar botones al imprimir */
+
+@media print {
+    .btn-imprimir {
+        display: none;
+    }
+}

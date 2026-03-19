@@ -1,10 +1,11 @@
 <?php
-header('Content-Type: application/json');
+session_start();
+//header('Content-Type: application/json');
 require_once __DIR__ . '/../models/modeloVentas.php';
 
 $db = new modeloVentas();
 
-$opcion = $_POST['opcion'] ?? '';
+$opcion = $_POST['opcion'] ?? $_GET['opcion'] ?? '';
 
 switch ($opcion) {
     case 'guardar-venta':
@@ -28,10 +29,11 @@ switch ($opcion) {
         $resultado = $db->registrarVenta($total, $pago, $cambio, $metodo_pago, $items);
 
         //Responemos al frontend 
-        if ($resultado === true)  {
+        if (is_numeric($resultado)) {
             echo json_encode([
                 "status" => "success",
-                "mensaje" => "Venta registrada correctamente"
+                "mensaje" => "Venta registrada correctamente",
+                "id_venta" => $resultado //Esto lo manda al js (id de venta)
             ]);
         } else {
             echo json_encode([
@@ -43,6 +45,21 @@ switch ($opcion) {
         exit;
 
         break;
+    case 'ver-ticket':
+        $id = $_GET['id_venta'] ?? null;
+        $resultado = $db->obtenerDetalleTicket($id);
+
+        if ($resultado) {
+            // Guardamos los datos en variables para que la vista las use
+            $venta = $resultado['venta'];
+            $productos = $resultado['items'];
+            // Incluimos la vista del ticket
+            include __DIR__ . '/../componentes/ticket.php';
+        } else {
+            echo "Ticket no encontrado";
+        }
+        break;
+
     default:
         echo json_encode([
             "status" => "error",

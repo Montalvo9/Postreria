@@ -31,7 +31,7 @@ class modeloProducto
         INNER JOIN categorias c 
             ON p.categoria = c.id_categoria
         
-    ");
+        ");
 
         $query->execute();
         $this->modelo = $query->fetchAll(PDO::FETCH_ASSOC);

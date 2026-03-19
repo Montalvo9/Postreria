@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include_once('../config/connection_postreria.php');
 
 class modeloVentas
@@ -152,16 +152,43 @@ class modeloVentas
             // Si todo salió bien se guardan todos los cambios
             $this->db->commit();
 
-            return true;
+            //return true;   *Antes retornaba true para confirmar que se hizo la venta 
+
+            return $id_venta;
         } catch (Exception $e) { // Cambia PDOException por Exception para atrapar el stock
             // 1. Un solo rollback bien validado
             if ($this->db->inTransaction()) {
                 $this->db->rollBack();
             }
 
-             
+
             // Devolvemos el mensaje para que el controlador lo reciba.
             return $e->getMessage();
         }
+    }
+
+
+
+    public function obtenerDetalleTicket($id_venta)
+    {
+        // Traemos la cabecera de la venta
+        $sqlVenta = "SELECT v.*, u.usuario FROM ventas v 
+                 JOIN usuarios u ON v.id_usuario = u.id_usuario 
+                 WHERE v.id_venta = :id";
+        $stmt = $this->db->prepare($sqlVenta);
+        $stmt->execute([':id' => $id_venta]);
+        $venta = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$venta) return null;
+
+        // Traemos los productos
+        $sqlItems = "SELECT dv.*, p.nombre FROM detalle_ventas dv
+                 JOIN productos p ON dv.id_producto = p.id_producto
+                 WHERE dv.id_venta = :id";
+        $stmtItems = $this->db->prepare($sqlItems);
+        $stmtItems->execute([':id' => $id_venta]);
+        $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+
+        return ['venta' => $venta, 'items' => $items];
     }
 }

@@ -653,7 +653,7 @@ function calculaCambio() {
 
 }
 
-
+let ultimoIdVenta = null; // Variable para almacenar el ID de la última venta realizada
 /**Confiramar cobro */
 
 function confirmarCobro() {
@@ -694,9 +694,17 @@ function confirmarCobro() {
 
             if (response.status === "success") {
 
+                ultimoIdVenta = response.id_venta; // Guardamos el ID de la venta realizada
+
                 cerrarModal();
                 limpiarCarrito();
                 toastr.success(response.mensaje);
+
+                // 2. AQUÍ VA LA LÍNEA MÁGICA
+                // response.id_venta viene del 'return $id_venta' que pusimos en el modelo
+                //const urlTicket = '/Postreria/controllers/controllerVentas.php?opcion=ver-ticket&id_venta=' + response.id_venta;
+
+                // window.open(urlTicket, '_blank');
 
             } else {
 
@@ -714,6 +722,22 @@ function confirmarCobro() {
     });
 
 }
+
+function imprimirTicket() {
+    // Si ultimoIdVenta tiene valor, es porque se acaba de hacer una venta
+    if (!ultimoIdVenta) {
+        toastr.warning("No hay ninguna venta reciente para mostrar.");
+        return;
+    }
+
+    const url = `/Postreria/controllers/controllerVentas.php?opcion=ver-ticket&id_venta=${ultimoIdVenta}`;
+    window.open(url, '_blank');
+}
+
+
+
+
+
 
 function limpiarCarrito() {
 
