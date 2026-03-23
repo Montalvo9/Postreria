@@ -58,7 +58,14 @@ switch ($opcion) {
             ]);
         }
         break;
-    default: 
-    echo json_encode(["data" => []]);
-    exit; 
+
+    case 'obtenerDatos-categoria':
+        $id = $_POST['idcategoria'];
+        $datos = $db->obtenerDatosCategoria($id);
+        echo json_encode($datos);
+        exit;
+        break;
+    default:
+        echo json_encode(["data" => []]);
+        exit;
 }

@@ -1,4 +1,11 @@
-/**DataTable */
+function cancelarForm() {
+    document.getElementById('frmRegistroCategoria').reset();
+}
+
+
+
+
+/**DataTable.....................................................*/
 tablaControlCategorias = $('#tablaCategorias').DataTable({
     language: {
         lengthMenu: "Mostrar MENU filas por página",
@@ -36,3 +43,88 @@ tablaControlCategorias = $('#tablaCategorias').DataTable({
         { data: "accion" }
     ]
 });
+
+
+/**Funcion para registrar categorias */
+
+function registrarCategoria() {
+    const formulario = document.getElementById('frmRegistroCategoria');
+
+    //Validamos ek formulario que se llenen todos los campos
+
+    if (!formulario.checkValidity()) {
+        formulario.reportValidity();
+        return;
+    }
+
+    //Obtenemos los datos del formulario
+    let categoria = {
+        opcion: "insertar-categoria",
+        nombre: document.getElementById('idnombre').value,
+        icono: document.getElementById('idicono').value,
+    };
+
+    $.ajax({
+        url: "/Postreria/controllers/controllerCategorias.php",
+        type: "POST",
+        data: categoria,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === "success") {
+
+                Swal.fire({
+                    title: response.mensaje,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                formulario.reset();
+
+                if (typeof tablaControlCategorias !== 'undefined') {
+                    tablaControlCategorias.ajax.reload(null, false);
+                }
+
+            } else {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: response.mensaje
+                });
+
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: "error",
+                title: "Error de conexión",
+                text: "No se pudo conectar con el servidor"
+            });
+        }
+    });
+
+}
+
+
+function obtenerDatos(id) {
+    document.getElementById("idCategoriaSeleccionado").value = id;
+    $('#editarCategoriaModal').modal('show');
+
+    //llammos a la funcion que se encarga de traer los datos 
+    obtenerDatosCategoria(id);
+}
+
+function obtenerDatosCategoria(id) {
+    $.ajax({
+        url: "/Postreria/controllers/controllerCategorias.php",
+        type: 'POST',
+        data: {
+            opcion: 'obtenerDatos-categoria',
+            idcategoria: id
+        },
+        success: function(item) {
+            console.log("Datos del item:", item);
+        }
+    });
+}

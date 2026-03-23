@@ -84,6 +84,7 @@
     <!-- FIN MAIN -->
 
     <!-- Modal para editar categoria -->
+     <?php include '../../componentes/modales/modalEditarCategoria.php'; ?>
 </body>
 
 </html>

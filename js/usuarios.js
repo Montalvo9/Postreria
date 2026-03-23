@@ -178,7 +178,7 @@ function registrarUsuario() {
         dataType: 'json', //  IMPORTANTE
         success: function(response) {
 
-            console.log("Respuesta del servidor:", response);
+            // console.log("Respuesta del servidor:", response);
 
             if (response.status === "success") {
 
