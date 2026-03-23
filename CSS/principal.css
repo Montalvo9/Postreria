@@ -230,11 +230,29 @@ body {
     gap: 8px;
     flex-shrink: 0;
     overflow-x: auto;
-    padding-bottom: 2px;
+    padding-bottom: 10px;
+    /* Aumentamos un poco para que la barra no se pegue a los botones */
+    /* Para Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--berry) transparent;
 }
 
+
+/* Para Edge, Chrome y Safari */
+
 .cat-bar::-webkit-scrollbar {
-    height: 0;
+    height: 6px;
+    /* ¡Cambiamos el 0 por un valor visible! */
+}
+
+.cat-bar::-webkit-scrollbar-thumb {
+    background-color: #d1d1d1;
+    /* Un color gris suave para que no rompa tu diseño */
+    border-radius: 10px;
+}
+
+.cat-bar::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .cat-btn {

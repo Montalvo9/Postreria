@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Postreria/CSS/principal.css">
+    <link rel="stylesheet" href="/Postreria/CSS/reportes.css">
+    <link rel="stylesheet" href="/Postreria/librerias/bootstrap/CSS/bootstrap.min.css">
+
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Postreria/librerias/libreriasGenerales.php'; ?>
+
+</head>
+
+<body>
+    <?php include '../../componentes/encabezado.php'; ?>
+    <!-- MAIN -->
+    <div class="container-reporte">
+        <!-- Encabezado del reporte-->
+        <div class="page-header">
+            <div class="page-title">
+                <i class=" fas fa-file-invoice-dollar"></i> Reportes & Ventas
+            </div>
+
+            <div class="date-selector">
+                <button class="date-btn active" onclick="setPeriod('hoy', this)">Hoy</button>
+                <button class="date-btn" onclick="setPeriod('semana', this)">Semana</button>
+                <button class="date-btn" onclick="setPeriod('mes', this)">Mes</button>
+                <input type="date" class="date-input" id="date-custom" onchange="setPeriod('custom', this)" />
+            </div>
+        </div>
+
+        <!-- Cards que muestran información -->
+        <div class="stats-grid">
+            <div class="stat-card ventas">
+                <div class="stat-header">
+                    <span class="stat-icon"><i class="fas fa-coins"></i></span>
+                    <span class="stat-trend up">↑ 12%</span>
+                </div>
+                <div class="stat-label">Ventas totales</div>
+                <div class="stat-value" id="total-ventas">$0</div>
+                <div class="stat-meta">48 transacciones</div>
+            </div>
+
+            <!-- Card pedidos -->
+
+            <div class="stat-card pedidos">
+                <div class="stat-header">
+                    <span class="stat-icon">🧾</span>
+                    <span class="stat-trend up">↑ 8%</span>
+                </div>
+                <div class="stat-label">Pedidos</div>
+                <div class="stat-value" id="total-pedidos">0</div>
+                <!-- <div class="stat-meta">Promedio 6/hora</div> -->
+            </div>
+
+            <!-- Card Productos vendidos -->
+            <div class="stat-card productos">
+                <div class="stat-header">
+                    <span class="stat-icon"><i class="fas fa-cookie"></i></span>
+                    <span class="stat-trend down">↓ 2%</span>
+                </div>
+                <div class="stat-label">Productos vendidos</div>
+                <div class="stat-value" id="productos-vendidos">0</div>
+                <div class="stat-meta">22 categorías</div>
+            </div>
+
+            <!-- Card Productos vendidos -->
+            <div class="stat-card productos">
+                <div class="stat-header">
+                    <span class="stat-icon"><i class="fas fa-birthday-cake"></i></span>
+                    <span class="stat-trend down">↓ 2%</span>
+                </div>
+                <div class="stat-label">Productos más vendido</div>
+                <div class="stat-value" id="producto-mas-vendido">0</div>
+                <div class="stat-meta">22 categorías</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPTS -->
+     <script src="/Postreria/js/reportes.js"></script>
+
+</body>
+
+
+
+</html>

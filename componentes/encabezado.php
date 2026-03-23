@@ -24,7 +24,10 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Categorias -->
             <a href="/Postreria/vistas/categorias/categorias.php" class="nav-link active"><i class="fa-solid fas fa-th" style="font-size: 15px;"></i> Categorias</a>
 
-            <a href="#" class="nav-link active"><i class="fas fa-file-alt" style="font-size: 15px;"></i>Reportes</a>
+            <!-- REPORTES -->
+            <a href="/Postreria/vistas/reportes/reportes.php" class="nav-link active"><i class="fas fa-file-alt" style="font-size: 15px;"></i>Reportes</a>
+
+
             <a href="/Postreria/controllers/cerrarSesion.php" class="nav-link active"><i class="fas fa-sign-out-alt" style="font-size: 15px;"></i> Salir</a>
         </nav>
     </div>
