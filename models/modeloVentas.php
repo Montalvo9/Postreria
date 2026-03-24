@@ -191,4 +191,45 @@ class modeloVentas
 
         return ['venta' => $venta, 'items' => $items];
     }
+
+    /**Funcion para obtener la conualta de reportes de total de venta por dia (hoy)
+     * semana, mes y una fecha en concreto dd/mm/aaaa
+     */
+
+    public function obtenerVentasTotales($periodo, $fecha = null)
+    {
+        $query = "";
+
+        if ($periodo == "hoy") {
+            $query = "SELECT SUM(total) AS total 
+                    FROM ventas WHERE DATE(fecha) = CURDATE()
+                    AND estado = 'completada'";
+
+        } elseif ($periodo == "semana") {
+            $query = "SELECT SUM(total) as total
+                    FROM ventas WHERE YEARWEEK(fecha,1) = YEARWEEK(CURDATE(),1)
+                    AND estado = 'completada'";
+
+        } elseif ($periodo == "mes") {
+            $query = "SELECT SUM(total) AS total
+                FROM ventas
+                WHERE MONTH(fecha) = MONTH(CURDATE())
+                AND YEAR(fecha) = YEAR(CURDATE())
+                AND estado = 'completada'";
+        }elseif($periodo == "custom"){
+            $query = "SELECT SUM(total) as total
+                      FROM ventas
+                      WHERE DATE(fecha) = ? 
+                      AND estado = 'completada'"; 
+        }
+        $consulta = $this->db->prepare($query); 
+
+        if($periodo == "custom"){
+            $consulta->execute([$fecha]); 
+        }else{
+            $consulta->execute(); 
+        }
+
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
 }

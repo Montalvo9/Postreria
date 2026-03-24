@@ -11,10 +11,26 @@ function setPeriod(periodo, element) {
 
     if (periodo === "custom") {
         fecha = element.value;
-        console.log("La fecha que seleciono es", fecha)
-
-
     }
+
+    $.ajax({
+        url: "/Postreria/controllers/controllerVentas.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            opcion: "obtener-reporte",
+            periodo: periodo,
+            fecha: fecha
+        },
+        success: function(response) {
+            console.log("La respuesta del dervidor es:", response);
+
+            let total = response.resultado.total;
+
+            $("#total-ventas").text("$" + total.toLocaleString());
+
+        }
+    })
 
 
 

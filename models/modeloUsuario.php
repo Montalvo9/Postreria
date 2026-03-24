@@ -58,7 +58,7 @@ class modeloUsuario
         $query->execute([$id]);
 
         /**Como solo esperamos un resultado , usamos fecth() directamente si while 
-         * PDO::FETCH_ASSOC nos devuelve ub objeto y no un arreglo 
+         * PDO::FETCH_ASSOC deveulve un arreglo asociativo
          * 
          */
         return $query->fetch(PDO::FETCH_ASSOC);
