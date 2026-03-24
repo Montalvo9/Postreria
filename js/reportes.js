@@ -25,7 +25,7 @@ function setPeriod(periodo, element) {
         success: function(response) {
             console.log("La respuesta del dervidor es:", response);
 
-            let total = response.resultado.total;
+            let total = response.resultado.total || 0;
 
             $("#total-ventas").text("$" + total.toLocaleString());
 
@@ -36,3 +36,15 @@ function setPeriod(periodo, element) {
 
 
 }
+/** Esto para que este activo el boton de hoy sin tener que darle click si no en cuanto entro a reportes como esta activo hoy 
+ * debe mostrar el total de ventas totales
+ */
+document.addEventListener("DOMContentLoaded", function() {
+
+    let botonActivo = document.querySelector(".date-btn.active");
+
+    if (botonActivo) {
+        setPeriod("hoy", botonActivo);
+    }
+
+});
