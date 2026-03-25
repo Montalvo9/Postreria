@@ -113,6 +113,6 @@ if (isset($_POST['ingresar'])) {
 </html>
 
 </body>
-<script src="./JS/floaters.js"></script>
+<script src="./js/floaters.js"></script>
 
 </html>
