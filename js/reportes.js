@@ -1,5 +1,9 @@
-function setPeriod(periodo, element) {
-    /**Quitamos la clase active, la clase activa es la que resaltar el elemento en el que estamos */
+/**Esta funcion sirve para mostrar el total de ventas por fechas, solo para la card total 
+ * funciona con la funcion obtenerVentasTotales()
+ */
+
+function setPeriod_P(periodo, element) {
+    //Quitamos la clase active, la clase activa es la que resaltar el elemento en el que estamos */
     document.querySelectorAll(".date-btn").forEach(btn => {
         btn.classList.remove('active');
     });
@@ -31,11 +35,66 @@ function setPeriod(periodo, element) {
 
         }
     })
+}
+
+
+/**Funcion setPeriod mas completa donde entrega pinta los resulatdos en las 4 cards (Vetntas totales
+ * Pedidos
+ * producto mas vendidos
+ * y cantidad de productos vendidos
+) */
+
+function setPeriod(periodo, element) {
+    //Quitamos la clase active, la clase activa es la que resaltar el elemento en el que estamos */
+    document.querySelectorAll(".date-btn").forEach(btn => {
+        btn.classList.remove('active');
+    });
+    if (element.tagName === "BUTTON") {
+        element.classList.add("active");
+    }
+
+    let fecha = null;
+
+    if (periodo === "custom") {
+        fecha = element.value;
+    }
+
+    $.ajax({
+        url: "/Postreria/controllers/controllerVentas.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            opcion: "obtener-reporte",
+            periodo: periodo,
+            fecha: fecha
+        },
+        success: function(response) {
+            console.log("La respuesta del dervidor es:", response);
+
+            let total = response.resultado.ventas_totales || 0;
+            let total_pedidos = response.resultado.numero_ventas || 0;
+            let productos_vendidos = response.resultado.productos_vendidos || 0;
+            let mas_vendido = response.resultado.producto_top;
+            let promedio_ticket = response.resultado.ticket_promedio || 0;
+
+            //pintamos las cards con los datos que devueñve el backend
+            $("#total-ventas").text("$" + total.toLocaleString());
+            $("#total-pedidos").text(total_pedidos.toLocaleString());
+            $("#productos-vendidos").text(productos_vendidos.toLocaleString());
+            $("#producto-mas-vendido").text(mas_vendido.toLocaleString());
+            $("#promedio_ticket").text(promedio_ticket.toLocaleString());
+
+        }
+    })
 
 
 
 
 }
+
+
+
+
 /** Esto para que este activo el boton de hoy sin tener que darle click si no en cuanto entro a reportes como esta activo hoy 
  * debe mostrar el total de ventas totales
  */

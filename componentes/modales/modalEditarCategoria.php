@@ -26,6 +26,16 @@
                         <input type="text" class="form-input" id="id-editaricono" placeholder="Ej: 🍰">
                     </div>
 
+                    <!-- ACTIVO -->
+                        <div class="form-group">
+                            <label class="form-label">ACTIVO</label>
+                            <select class="form-input" name="activo" id="editarActivo">
+                                <option value="">Selecionar</option>
+                                <option value="1">SI</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+
                     <!-- ACTIONS -->
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" onclick="cancelarFormEditar()">
@@ -33,7 +43,7 @@
                             <span>Cancelar</span>
                         </button>
 
-                        <button type="button" class="btn btn-primary" id="submit-btn" onclick="EditarCategoria()">
+                        <button type="button" class="btn btn-primary" id="submit-btn" onclick="editarCategoria()">
                             <i class="fas fa-check"></i>
                             <span id="submit-text">Editar categoria</span>
                         </button>

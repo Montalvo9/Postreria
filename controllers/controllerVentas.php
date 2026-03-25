@@ -61,25 +61,25 @@ switch ($opcion) {
         break;
 
     case "obtener-reporte":
-        $periodo = $_POST['periodo'] ?? 'hoy'; 
-        $fecha = $_POST['fecha'] ?? null;     
+        $periodo = $_POST['periodo'] ?? 'hoy';
+        $fecha = $_POST['fecha'] ?? null;
 
-        $resultado = $db->obtenerVentasTotales($periodo, $fecha);
+        $resultado = $db->obtenerReportes($periodo, $fecha);
 
-        if($resultado){
+        if ($resultado) {
             echo json_encode([
                 "status" => "success",
                 "resultado" => $resultado
             ]);
-        }else{
+        } else {
             echo json_encode([
                 "status" => "error",
                 "mensaje" => "Error al ejecutar la consulta"
             ]);
-
         }
-        break;{
-    }
+
+        break; 
+        
 
     default:
         echo json_encode([

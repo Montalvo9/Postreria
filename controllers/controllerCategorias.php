@@ -65,6 +65,39 @@ switch ($opcion) {
         echo json_encode($datos);
         exit;
         break;
+
+    case 'editar-categoria':
+        $id = $_POST['idCategoria'] ?? ''; 
+        $nombre = $_POST['nombre'] ?? ''; 
+        $icono = $_POST['icono'] ?? ''; 
+        $estado = $_POST['estado'] ?? ''; 
+
+
+        //Validacion obligatoria para que se llenen los campos a exepción de (icono), esta ultima puede ir vacio
+
+        if($nombre === '' || $estado === ''){
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Todos los campos icono son obligatorios"
+            ]);
+            exit;
+        }
+
+        $resultado = $db->editarCategoria($id, $nombre,$icono,$estado); 
+        if($resultado){
+            echo json_encode([
+                "status" => "success",
+                "mensaje"=> "Categoria editada correctamente"
+            ]);
+        }else{
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Error al editar la categoria"
+            ]);
+
+        }
+        exit;
+        break;
     default:
         echo json_encode(["data" => []]);
         exit;

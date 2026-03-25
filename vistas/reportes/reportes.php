@@ -78,6 +78,17 @@
                 <div class="stat-value" id="producto-mas-vendido">0</div>
                 <div class="stat-meta">22 categorías</div>
             </div>
+
+            <!-- Promedio de venta en los tickets -->
+            <div class="stat-card productos">
+                <div class="stat-header">
+                    <span class="stat-icon"><i class="fas fa-chart-line"></i></span>
+                    <span class="stat-trend down">↓ 2%</span>
+                </div>
+                <div class="stat-label">Promedio de venta de los tickets</div>
+                <div class="stat-value" id="promedio_ticket">0</div>
+                <div class="stat-meta">22 categorías</div>
+            </div>
         </div>
 
     </div>

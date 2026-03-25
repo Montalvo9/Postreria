@@ -148,7 +148,7 @@ $categorias = $modelo->obtenerCategoria();
                     <div class="btn-row">
                         <button class="btn-secondary" onclick="imprimirTicket()"><i class="fas fa-print"></i>Ticket</button>
                         <button class="btn-secondary" onclick="nuevoPedido()"><i class="fas fa-file-circle-plus"></i>Nuevo</button>
-                        <button class="btn-secondary" onclick="limpiarPedido()"><i class="fas fa-trash"></i>Limpiar</button>
+                        <button class="btn-secondary" onclick="limpiarCarrito()"><i class="fas fa-trash"></i>Limpiar</button>
                     </div>
                 </div>
 

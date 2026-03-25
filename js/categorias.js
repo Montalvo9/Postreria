@@ -3,6 +3,11 @@ function cancelarForm() {
 }
 
 
+function cancelarFormEditar() {
+    document.getElementById('frmEditarCategoria').reset();
+}
+
+
 
 
 /**DataTable.....................................................*/
@@ -124,7 +129,79 @@ function obtenerDatosCategoria(id) {
             idcategoria: id
         },
         success: function(item) {
-            console.log("Datos del item:", item);
+            // console.log("Datos del item:", item);
+
+            //llenamos los inputs con los datos 
+            document.getElementById("id-editarnombre").value = item.nombre;
+            document.getElementById("id-editaricono").value = item.icono;
+            document.getElementById("editarActivo").value = item.activo;
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText); //para debuguear
+        }
+
+    });
+}
+
+/**FUNCION EDITAR CATEGORIA */
+function editarCategoria() {
+    //Validamos el formuario 
+    const formulario = document.getElementById("frmEditarCategoria");
+    if (!formulario.checkValidity()) {
+        formulario.reportValidity();
+        return;
+    }
+
+
+    const idCategoria = document.getElementById("idCategoriaSeleccionado").value;
+    const nombre = document.getElementById("id-editarnombre").value;
+    const icono = document.getElementById("id-editaricono").value;
+    const estado = document.getElementById("editarActivo").value;
+
+    let categoria = {
+        opcion: "editar-categoria",
+        idCategoria: idCategoria,
+        nombre: nombre,
+        icono: icono,
+        estado: estado
+    };
+
+    //console.log(categoria)
+    $.ajax({
+        url: '/Postreria/controllers/controllerCategorias.php',
+        type: 'POST',
+        data: categoria,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == "success") {
+                Swal.fire({
+                    title: response.mensaje,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                formulario.reset();
+                $('#editarCategoriaModal').modal('hide'); //cerrar modal
+
+                if (typeof tablaControlCategorias !== 'undefined') {
+                    tablaControlCategorias.ajax.reload(null, false);
+                }
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "error",
+                    text: response.mensaje
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: "error",
+                title: "Error de conexión",
+                text: "No se pudo conectar al servidor"
+            });
         }
     });
+
+
 }

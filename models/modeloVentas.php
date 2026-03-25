@@ -194,6 +194,7 @@ class modeloVentas
 
     /**Funcion para obtener la conualta de reportes de total de venta por dia (hoy)
      * semana, mes y una fecha en concreto dd/mm/aaaa
+     * ESTA FUNCION SIRVE SOLO PARA OBTENER LAS VENTAS TOTALES POR SEMANA , HOY, MES 
      */
 
     public function obtenerVentasTotales($periodo, $fecha = null)
@@ -204,32 +205,99 @@ class modeloVentas
             $query = "SELECT SUM(total) AS total 
                     FROM ventas WHERE DATE(fecha) = CURDATE()
                     AND estado = 'completada'";
-
         } elseif ($periodo == "semana") {
             $query = "SELECT SUM(total) as total
                     FROM ventas WHERE YEARWEEK(fecha,1) = YEARWEEK(CURDATE(),1)
                     AND estado = 'completada'";
-
         } elseif ($periodo == "mes") {
             $query = "SELECT SUM(total) AS total
                 FROM ventas
                 WHERE MONTH(fecha) = MONTH(CURDATE())
                 AND YEAR(fecha) = YEAR(CURDATE())
                 AND estado = 'completada'";
-        }elseif($periodo == "custom"){
+        } elseif ($periodo == "custom") {
             $query = "SELECT SUM(total) as total
                       FROM ventas
                       WHERE DATE(fecha) = ? 
-                      AND estado = 'completada'"; 
+                      AND estado = 'completada'";
         }
-        $consulta = $this->db->prepare($query); 
+        $consulta = $this->db->prepare($query);
 
-        if($periodo == "custom"){
-            $consulta->execute([$fecha]); 
-        }else{
-            $consulta->execute(); 
+        if ($periodo == "custom") {
+            $consulta->execute([$fecha]);
+        } else {
+            $consulta->execute();
         }
 
         return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**Esta función es general, sirve para obtener el total como el de la funcion obtenerVentasTotales, pero tambien para obtener los 
+     * reportes de Pedidos, numero de productos que se vendieron, y el producto mas vendido , todo en esta sola función
+     */
+    public function obtenerReportes($periodo, $fecha = null)
+    {
+        $filtroVentas = "";
+        $params = [];
+
+        if ($periodo == "hoy") {
+            $filtroVentas = "DATE(v.fecha) = CURDATE()";
+        } elseif ($periodo == "semana") {
+            $filtroVentas = "YEARWEEK(v.fecha,1) = YEARWEEK(CURDATE(),1)";
+        } elseif ($periodo == "mes") {
+            $filtroVentas = "MONTH(v.fecha) = MONTH(CURDATE())
+                         AND YEAR(v.fecha) = YEAR(CURDATE())";
+        } elseif ($periodo == "custom") {
+            $filtroVentas = "DATE(v.fecha) = ?";
+            $params[] = $fecha;
+        }
+
+        // métricas principales
+        $sql = "SELECT
+            SUM(v.total) AS venta_total,
+            COUNT(v.id_venta) AS numero_ventas,
+            AVG(v.total) AS ticket_promedio
+            FROM ventas v
+            WHERE $filtroVentas
+            AND v.estado = 'completada'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute($params);
+        $datos = $query->fetch(PDO::FETCH_ASSOC);
+
+        // productos vendidos
+        $sqlProductos = "SELECT 
+                     SUM(dv.cantidad) AS productos_vendidos
+                     FROM detalle_ventas dv
+                     INNER JOIN ventas v ON dv.id_venta = v.id_venta
+                     WHERE $filtroVentas
+                     AND v.estado = 'completada'";
+
+        $query = $this->db->prepare($sqlProductos);
+        $query->execute($params);
+        $productos = $query->fetch(PDO::FETCH_ASSOC);
+
+        // producto más vendido
+        $sqlTop = "SELECT p.nombre, SUM(dv.cantidad) AS total
+               FROM detalle_ventas dv
+               INNER JOIN productos p ON dv.id_producto = p.id_producto
+               INNER JOIN ventas v ON dv.id_venta = v.id_venta
+               WHERE $filtroVentas
+               AND v.estado = 'completada'
+               GROUP BY dv.id_producto
+               ORDER BY total DESC
+               LIMIT 1";
+
+        $query = $this->db->prepare($sqlTop);
+        $query->execute($params);
+        $mas_vendido = $query->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "ventas_totales" => $datos["venta_total"] ?? 0,
+            "numero_ventas" => $datos["numero_ventas"] ?? 0,
+            "ticket_promedio" => $datos["ticket_promedio"] ?? 0,
+            "productos_vendidos" => $productos["productos_vendidos"] ?? 0,
+            "producto_top" => $mas_vendido["nombre"] ?? "N/A"
+        ];
     }
 }

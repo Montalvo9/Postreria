@@ -57,6 +57,31 @@ class modeloCategorias
         /**Como solo esperamos un resultado , usamos fecth() directamente si while */
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    public function editarCategoria($id, $nombre, $icono, $activo){
+        try{
+            $consulta = "UPDATE categorias
+                    SET nombre = :nombre,
+                        icono = :icono,
+                        activo = :activo
+                    WHERE id_categoria = :id
+                     ";
+
+            $query = $this->db->prepare($consulta); 
+
+            //vinculamos los datos
+            $query->bindParam(':nombre', $nombre);
+            $query->bindParam(":icono", $icono); 
+            $query->bindParam(":activo", $activo, PDO::PARAM_INT);
+            $query->bindParam(":id", $id, PDO::PARAM_INT);
+
+            return $query->execute();
+
+        }catch(PDOException $error){
+            return false;
+        }
+    }
 }
 
 ?>

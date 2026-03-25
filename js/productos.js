@@ -690,7 +690,7 @@ function confirmarCobro() {
         dataType: 'json',
 
         success: function(response) {
-            console.log("Que trae el response", response)
+            //console.log("Que trae el response", response)
 
             if (response.status === "success") {
 

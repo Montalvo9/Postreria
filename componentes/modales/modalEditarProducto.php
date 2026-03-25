@@ -57,7 +57,7 @@
 
                         <!-- ACTIONS -->
                         <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" onclick="cancelarForm()">
+                            <button type="button" class="btn btn-secondary" onclick="cancelarFormEditar()">
                                 <i class="fas fa-times"></i>
                                 <span>Cancelar</span>
                             </button>
