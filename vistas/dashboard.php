@@ -42,14 +42,14 @@ $categorias = $modelo->obtenerCategoria();
     <div class="main">
         <!-- Left: Productos (panel donde se muestra el catalogo de productos) -->
         <div class="left-panel">
-            <div class="mesa-bar">
+            <!--<div class="mesa-bar">
                 <span class="mesa-label">Mesas</span>
                 <button class="mesa-btn active" onclick="seleccionarMesa(1, this)">1</button>
                 <button class="mesa-btn active" onclick="seleccionarMesa(1, this)">1</button>
                 <button class="mesa-btn" onclick="seleccionarMesa(2, this)">2</button>
                 <button class="mesa-btn" onclick="seleccionarMesa(3, this)">3</button>
                 <button class="mesa-add" onclick="agregarMesa()">＋</button>
-            </div>
+            </div> -->
             <!-- CATEGORÍAS -->
             <div class="cat-bar">
                 <!-- En HTML + JavaScript, this significa "este elemento que se está clickeando". -->
