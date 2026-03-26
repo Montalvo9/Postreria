@@ -26,7 +26,7 @@ if ($is_render) {
     define('PASSWORD', '');
 
   $options = [
-    PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/certs/isrgrootx1.pem',
+    PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../certs/isrgrootx1.pem',
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 ];
