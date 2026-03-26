@@ -1,5 +1,6 @@
-<!--Logica de inicio de sesión -->
+
 <?php
+//Logica de inicio de sesión 
 session_start();
 require_once './librerias/libreriasGenerales.php';
 include './controllers/controlllerLogin.php';
@@ -113,6 +114,6 @@ if (isset($_POST['ingresar'])) {
 </html>
 
 </body>
-<script src="./js/floaters.js"></script>
+<script src="/Postreria/js/floaters.js"></script>
 
 </html>
