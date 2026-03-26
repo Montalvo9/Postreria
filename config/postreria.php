@@ -1,30 +1,25 @@
-
-
 <?php
-// Revisamos si existe la variable de entorno en Render, si no, es que estamos en Local
-$is_render = getenv('gateway01.us-west-2.prod.aws.tidbcloud.com
-') !== false;
+// Revisamos si existe la variable de entorno DB_HOST en Render
+$is_render = getenv('DB_HOST') !== false;
 
 if ($is_render) {
-    // --- CONFIGURACIÓN PARA RENDER (TiDB Cloud) ---
-    define('SERVER247', getenv('gateway01.us-west-2.prod.aws.tidbcloud.com
-'));
-    define('DATABASE247', getenv('test'));
-    define('USERPOSTRERIA', getenv('3bHwH3NjGLXmRxd.root'));
-    define('PASSWORD', getenv('vxkENcKTpYSb3ggg
-'));
+    // --- CONFIGURACIÓN PARA RENDER (Usa las etiquetas, no los datos reales aquí) ---
+    define('SERVER247', getenv('DB_HOST'));
+    define('DATABASE247', getenv('DB_NAME')); 
+    define('USERPOSTRERIA', getenv('DB_USER')); 
+    define('PASSWORD', getenv('DB_PASSWORD'));
     $port = getenv('DB_PORT') ?: '4000';
 
-    // TiDB REQUIERE SSL. Esta configuración es para PDO:
+    // TiDB REQUIERE SSL.
     $options = [
-        PDO::MYSQL_ATTR_SSL_CA => true, // Esto activa el SSL obligatorio de TiDB
+        PDO::MYSQL_ATTR_SSL_CA => true, 
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ];
 
     define('DSN', 'mysql:host=' . SERVER247 . ';port=' . $port . ';dbname=' . DATABASE247 . ';charset=utf8mb4');
 } else {
-    // --- CONFIGURACIÓN PARA TU PC (XAMPP / Localhost) ---
+    // --- CONFIGURACIÓN PARA TU PC (Localhost) ---
     define('SERVER247', 'localhost');
     define('DATABASE247', 'postreria');
     define('USERPOSTRERIA', 'root');
@@ -37,8 +32,4 @@ if ($is_render) {
 
     define('DSN', 'mysql:host=' . SERVER247 . ';dbname=' . DATABASE247 . ';charset=utf8mb4');
 }
-
-// Así es como debes conectar después de las definiciones:
-// $pdo = new PDO(DSN, USERPOSTRERIA, PASSWORD, $options);
 ?>
-
