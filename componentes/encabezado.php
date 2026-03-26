@@ -19,10 +19,14 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php endif ?>
 
             <!-- Productos  -->
-            <a href="/Postreria/vistas/productos/productos.php" class="nav-link active"><i class="fa-solid fas fa-box" style="font-size: 15px;"></i> Productos</a>
+            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === "admin"): ?>
+                <a href="/Postreria/vistas/productos/productos.php" class="nav-link active"><i class="fa-solid fas fa-box" style="font-size: 15px;"></i> Productos</a>
+            <?php endif ?>
 
             <!-- Categorias -->
-            <a href="/Postreria/vistas/categorias/categorias.php" class="nav-link active"><i class="fa-solid fas fa-th" style="font-size: 15px;"></i> Categorias</a>
+            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === "admin"): ?>
+                <a href="/Postreria/vistas/categorias/categorias.php" class="nav-link active"><i class="fa-solid fas fa-th" style="font-size: 15px;"></i> Categorias</a>
+            <?php endif ?>
 
             <!-- REPORTES -->
             <a href="/Postreria/vistas/reportes/reportes.php" class="nav-link active"><i class="fas fa-file-alt" style="font-size: 15px;"></i>Reportes</a>
