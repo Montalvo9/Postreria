@@ -25,11 +25,13 @@ if ($is_render) {
     define('USERPOSTRERIA', 'root');
     define('PASSWORD', '');
 
-  $options = [
-    PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../certs/isrgrootx1.pem',
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-];
+  // TiDB REQUIERE SSL con certificado específico
+    $options = [
+        // Usamos __DIR__ para que PHP encuentre la carpeta 'certs' automáticamente
+        PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../certs/isrgrootx1.pem', 
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ];
 
     define('DSN', 'mysql:host=' . SERVER247 . ';dbname=' . DATABASE247 . ';charset=utf8mb4');
 }
