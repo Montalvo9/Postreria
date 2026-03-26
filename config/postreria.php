@@ -25,7 +25,10 @@ if ($is_render) {
     define('USERPOSTRERIA', 'root');
     define('PASSWORD', '');
 
+    // TiDB REQUIERE SSL, pero en Render forzamos a que no valide el certificado local
     $options = [
+        PDO::MYSQL_ATTR_SSL_CA => true, 
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false, // Agrega esta línea
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ];
