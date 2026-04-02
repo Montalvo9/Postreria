@@ -77,9 +77,22 @@ switch ($opcion) {
                 "mensaje" => "Error al ejecutar la consulta"
             ]);
         }
+        exit;
+        break;
 
-        break; 
-        
+    case "top-vendidos":
+        $periodo = $_POST['periodo'] ?? 'hoy';
+        $fecha = $_POST['fecha'] ?? null;
+        $limite = $_POST['limite'] ?? 5;
+
+        $resultado = $db->obtenerTopVendidos($periodo, $fecha, $limite);
+
+        echo json_encode([
+            "status" => "success",
+            "data" => $resultado
+        ]);
+        exit;
+        break;
 
     default:
         echo json_encode([

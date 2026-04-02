@@ -104,7 +104,8 @@
                     </div>
                 </div>
 
-                <!-- PAYMENT METHODS -->
+                <!-- PAYMENT METHODS 
+                 
                 <div class="payment-methods-card">
                     <div class="section-title">
                         <span class="emoji">💳</span>
@@ -133,7 +134,7 @@
                             <div class="payment-amount" id="transfer-total">$400</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 

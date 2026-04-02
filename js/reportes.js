@@ -69,7 +69,7 @@ function setPeriod(periodo, element) {
             fecha: fecha
         },
         success: function(response) {
-            console.log("La respuesta del dervidor es:", response);
+            //console.log("La respuesta del dervidor es:", response);
 
             let total = response.resultado.ventas_totales || 0;
             let total_pedidos = response.resultado.numero_ventas || 0;
@@ -85,11 +85,59 @@ function setPeriod(periodo, element) {
             $("#promedio_ticket").text(promedio_ticket.toLocaleString());
 
         }
-    })
+    });
 
+    //funcion que carga el los top 10 productos mas vendidos
+    topVendidos(periodo, fecha);
+}
 
+function topVendidos(periodo, fecha = null) {
+    console.log("Periodo:", periodo);
+    console.log("Fecha:", fecha);
 
+    $.ajax({
+        url: "/Postreria/controllers/controllerVentas.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            opcion: "top-vendidos",
+            periodo: periodo,
+            fecha: fecha,
+            limite: 5
+        },
+        success: function(response) {
+            console.log("Que esta mandando response:", response);
+            const container = document.getElementById('top-products-list');
+            container.innerHTML = '';
 
+            if (response.data.length === 0) {
+                container.innerHTML = `<div>No hay datos</div>`;
+                return;
+            }
+
+            response.data.forEach((prod, index) => {
+                let rank = index + 1;
+
+                container.innerHTML += `
+                <div class="product-row rank-${rank}">
+
+                 <div class="product-rank rank-${rank}">
+                ${rank}
+                </div>
+
+                 <div class="product-info">
+                <div class="product-name">${prod.nombre}</div>
+                <div class="product-sales">
+                    ${prod.total_vendidos} vendidos
+                </div>
+                 </div>
+
+                </div>
+               `;
+
+            });
+        }
+    });
 }
 
 
