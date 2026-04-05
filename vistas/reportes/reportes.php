@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/Postreria/CSS/principal.css">
     <link rel="stylesheet" href="/Postreria/CSS/reportes.css">
     <link rel="stylesheet" href="/Postreria/librerias/bootstrap/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Postreria/librerias/libreriasGenerales.php'; ?>
 
@@ -135,6 +136,19 @@
                         </div>
                     </div>
                 </div> -->
+                <div>
+                    <h1>Metodos de pago</h1>
+                </div> 
+                <div>
+                    <h1>Acciones rapidas</h1>
+                </div>           
+            </div>
+        </div>
+
+        <!--Tabla de productos vendidos -->
+        <div class="table-container" id="table-container">
+            <div id="tablaProductosVendidosLoad">
+                <?php include '../../componentes/tablas/tablaProductosVendidos.php'; ?>
             </div>
         </div>
 

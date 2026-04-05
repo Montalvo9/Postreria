@@ -89,11 +89,14 @@ function setPeriod(periodo, element) {
 
     //funcion que carga el los top 10 productos mas vendidos
     topVendidos(periodo, fecha);
+    cargarTablaProductos(periodo, fecha);
+
+
 }
 
 function topVendidos(periodo, fecha = null) {
-    console.log("Periodo:", periodo);
-    console.log("Fecha:", fecha);
+    //  console.log("Periodo:", periodo);
+    // console.log("Fecha:", fecha);
 
     $.ajax({
         url: "/Postreria/controllers/controllerVentas.php",
@@ -106,7 +109,7 @@ function topVendidos(periodo, fecha = null) {
             limite: 5
         },
         success: function(response) {
-            console.log("Que esta mandando response:", response);
+            // console.log("Que esta mandando response:", response);
             const container = document.getElementById('top-products-list');
             container.innerHTML = '';
 
@@ -155,3 +158,80 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+
+
+
+/*DATATABLE DE LA TABLA que muestra los productos vendidos (hoy, semana, mes, fecha selecionada manualmente) */
+$(document).ready(function() {
+    tablaProductosVendidos = $('#tablaProductosVendidos').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            { extend: 'csv', className: 'btn btn-info' },
+            { extend: 'excel', className: 'btn btn-success' },
+            { extend: 'pdf', className: 'btn btn-danger' },
+
+            { extend: 'print', className: 'btn btn-warning' },
+        ],
+        language: {
+            lengthMenu: "Mostrar MENU filas por página",
+            zeroRecords: "No hay elementos que coincidan",
+            info: "Mostrando página PAGE de PAGES",
+            infoEmpty: "Mostrando 0 a 0 de 0 filas",
+            infoFiltered: "(filtradas de MAX filas totales)",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior",
+            },
+        },
+        pageLength: 10,
+        responsive: true,
+        processing: true
+    });
+
+    //cargarmos los datos inciales (los datos de hoy porque esta es la que esta selecionada por default al entrar a  "reportes" )
+    setPeriod('hoy', document.querySelector(".date-btn.active"));
+
+});
+
+
+
+
+/**Funcion que va a cargar y pintar los datos de la consulta */
+function cargarTablaProductos(periodo, fecha = null) {
+    $.ajax({
+        url: "/Postreria/controllers/controllerVentas.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            opcion: 'productos-vendidos',
+            periodo: periodo,
+            fecha: fecha
+        },
+        success: function(response) {
+            console.log("Cuales son los productos vendidos que manda el server", response);
+            /**LIMPIAR TABLA */
+            tablaProductosVendidos.clear();
+            if (!response.data || response.data.length === 0) {
+                tablaProductosVendidos.draw(); //redibuja la tabla vacia
+                return;
+            }
+
+            //agregar filas 
+            response.data.forEach(prod => {
+                tablaProductosVendidos.row.add([
+                    prod.nombre,
+                    prod.total_vendidos,
+                    "$" + parseFloat(prod.total_generado).toFixed(2)
+
+                ]);
+            });
+
+            //Redibuja la tabla
+            tablaProductosVendidos.draw();
+
+        }
+    });
+}

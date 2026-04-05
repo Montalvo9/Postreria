@@ -94,6 +94,19 @@ switch ($opcion) {
         exit;
         break;
 
+    case "productos-vendidos":
+        $periodo = $_POST['periodo'] ?? 'hoy';
+        $fecha = $_POST['fecha'] ?? null;
+
+        $resultado = $db->productosVendidos($periodo, $fecha);
+
+        echo json_encode([
+            "status" => "success",
+            "data" => $resultado
+        ]);
+        exit;
+        break;
+
     default:
         echo json_encode([
             "status" => "error",

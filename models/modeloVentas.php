@@ -337,4 +337,43 @@ class modeloVentas
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    public function productosVendidos($periodo, $fecha = null){
+        $filtroVentas = "";
+        $params = [];
+
+
+        if ($periodo == "hoy") {
+            $filtroVentas = "DATE(v.fecha) = CURDATE()";
+        } elseif ($periodo == "semana") {
+            $filtroVentas = "YEARWEEK(v.fecha,1) = YEARWEEK(CURDATE(),1)";
+        } elseif ($periodo == "mes") {
+            $filtroVentas = "MONTH(v.fecha) = MONTH(CURDATE())
+                         AND YEAR(v.fecha) = YEAR(CURDATE())";
+        } elseif ($periodo == "custom") {
+            $filtroVentas = "DATE(v.fecha) = ?";
+            $params[] = $fecha;
+        }
+
+
+        //metricas 
+
+        $sql = "SELECT 
+                p.nombre,
+                SUM(dv.cantidad) as total_vendidos,
+                SUM(dv.subtotal) as total_generado
+                FROM detalle_ventas dv
+                INNER JOIN productos p ON dv.id_producto = p.id_producto
+                INNER JOIN ventas v ON dv.id_venta = v.id_venta
+                WHERE $filtroVentas
+                AND v.estado = 'completada'
+                GROUP BY dv.id_producto
+                ORDER BY total_vendidos DESC";
+
+        $stmt = $this->db->prepare($sql); 
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
