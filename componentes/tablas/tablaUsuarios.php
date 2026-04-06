@@ -1,6 +1,6 @@
 <div>
     <table id="tablaUsuarios" class="table table-striped table-hover table-bordered">
-        <thead>
+        <thead class="table-danger">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>

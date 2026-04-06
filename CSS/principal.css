@@ -348,21 +348,45 @@ body {
 }
 
 .product-card {
-    background: white;
-    border-radius: var(--radius);
-    padding: 15px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: var(--shadow);
-    border: 2px solid transparent;
+    /* Estructura y Espaciado */
     display: flex;
     flex-direction: column;
-    /* importante */
     align-items: center;
-    justify-content: flex-start;
-    min-height: 120px;
-    /* más alto para que se vea uniforme */
-    text-align: center;
+    justify-content: center;
+    padding: 1.5rem;
+    min-height: 160px;
+    /* Un poco más de aire para el contenido */
+    /* Estética de Cristal/Limpia */
+    background: #ffffff;
+    border-radius: 12px;
+    /* Bordes más suaves y modernos */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Borde casi imperceptible */
+    /* Sombra suave (Layered Shadow) */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* Interactividad */
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* Efecto Hover Profesional */
+
+.product-card:hover {
+    transform: translateY(-5px);
+    background: #ffffff;
+    border-color: var(--primary-color, #3b82f6);
+    /* Color de acento */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Opcional: Feedback visual al hacer click */
+
+.product-card:active {
+    transform: translateY(-2px) scale(0.98);
 }
 
 .product-card:hover {
