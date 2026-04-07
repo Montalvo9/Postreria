@@ -227,14 +227,32 @@ body {
 
 .cat-bar {
     display: flex;
-    gap: 8px;
+    gap: 12px;
+    /* un poco más de aire */
     flex-shrink: 0;
     overflow-x: auto;
-    padding-bottom: 10px;
-    /* Aumentamos un poco para que la barra no se pegue a los botones */
-    /* Para Firefox */
+    padding: 10px 0;
+    background-color: #f9f9f9;
+    /* fondo suave */
+    border-radius: 6px;
     scrollbar-width: thin;
     scrollbar-color: var(--berry) transparent;
+}
+
+
+/* Scroll personalizado para Chrome/Edge */
+
+.cat-bar::-webkit-scrollbar {
+    height: 6px;
+}
+
+.cat-bar::-webkit-scrollbar-thumb {
+    background-color: var(--berry);
+    border-radius: 3px;
+}
+
+.cat-bar::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 
