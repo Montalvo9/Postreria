@@ -58,7 +58,7 @@ if (isset($_POST['ingresar'])) {
         <div class="floaters" id="floaters"></div>
         <div class="branding">
             <div class="logo-mark">🍓</div>
-            <div class="brand-name">El Dulce<br><em>Rincón</em></div>
+            <div class="brand-name">Dulce<br><em>Momento</em></div>
             <div class="brand-tagline">Tu sabor favorito</div>
         </div>
     </div>

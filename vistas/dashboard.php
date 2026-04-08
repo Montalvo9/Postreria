@@ -89,6 +89,7 @@ $categorias = $modelo->obtenerCategoria();
                         data-precio="<?= $producto['precio'] ?>"
                         data-categoria="<?= strtolower($producto['nombre_categoria']) ?>">
 
+
                         <h4 class="product-name"><?= $producto['nombre'] ?></h4>
                         <p class="product-price">$<?= number_format($producto['precio'], 2) ?></p>
 
@@ -103,7 +104,7 @@ $categorias = $modelo->obtenerCategoria();
             <div class="ticket-header">
                 <div class="ticket-title">
                     Pedido
-                    <span class="ticket-mesa-badge" id="ticket-mesa">Mesa 1</span>
+                    <!--<span class="ticket-mesa-badge" id="ticket-mesa">Mesa 1</span>-->
                 </div>
                 <div class="ticket-meta" id="ticket-hora">—</div>
 

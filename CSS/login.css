@@ -1,12 +1,13 @@
 :root {
     --cream: #FDF6EE;
     --blush: #F5DDD0;
-    --rose: #E8A89C;
-    --berry: #C96B7A;
+    --rose: #e2d4d2;
+    --berry: #C527F5;
     --dark: #3D1F2A;
     --choco: #6B3A4A;
     --gold: #D4A853;
     --mint: #8BBFAD;
+    --negro: black;
 }
 
 *,
@@ -61,7 +62,7 @@ body {
 .blob-2 {
     width: 380px;
     height: 380px;
-    background: var(--gold);
+    background: var(--berry);
     bottom: -80px;
     left: 60px;
     animation-delay: -4s;
@@ -70,7 +71,7 @@ body {
 .blob-3 {
     width: 300px;
     height: 300px;
-    background: var(--rose);
+    background: var(--berry);
     top: 40%;
     left: 50%;
     animation-delay: -8s;
@@ -216,7 +217,7 @@ body {
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--berry);
+    color: var(--negro);
     margin-bottom: 10px;
 }
 
@@ -224,13 +225,13 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 32px;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--negro);
     margin-bottom: 6px;
 }
 
 .form-title em {
     font-style: italic;
-    color: var(--berry);
+    color: var(--negro);
 }
 
 .form-sub {
@@ -291,7 +292,7 @@ body {
     padding: 15px;
     border-radius: 14px;
     border: none;
-    background: linear-gradient(135deg, var(--dark), var(--choco));
+    background: rgb(104, 179, 104);
     color: var(--cream);
     font-family: 'Playfair Display', serif;
     font-size: 17px;
