@@ -65,7 +65,7 @@
                                 <span class="role-icon">
                                     <i class="fas fa-user-tie fa-2x"></i>
                                 </span>
-                                <div class="role-name">Vendedor</div>
+                                <div class="role-name-vendedor">Vendedor</div>
                                 <div class="role-desc">Realiza ventas</div>
                             </div>
 
@@ -73,7 +73,7 @@
                                 <span class="role-icon">
                                     <i class="fas fa-key fa-2x"></i>
                                 </span>
-                                <div class="role-name">Admin</div>
+                                <div class="role-name-admin">Admin</div>
                                 <div class="role-desc">Acceso total</div>
                             </div>
 
