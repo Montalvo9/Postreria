@@ -45,7 +45,7 @@
     font-family: 'Playfair Display', serif;
     font-size: 32px;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--shadow);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -69,7 +69,7 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    color: var(--chocolate);
+    color: var(--shadow);
     cursor: pointer;
     transition: all 0.18s;
 }
@@ -80,9 +80,9 @@
 }
 
 .date-btn.active {
-    background: var(--berry);
+    background: #a855f7;
     color: white;
-    border-color: var(--berry);
+    border-color: #a855f7;
 }
 
 .date-input {
@@ -92,7 +92,7 @@
     background: white;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
-    color: var(--dark);
+    color: var(--shadow);
     outline: none;
 }
 
@@ -116,7 +116,7 @@
 /* Ajustes para que las tarjetas no se vean gigantes */
 
 .stat-card {
-    background: #FFF0F3;
+    background: white;
     border-radius: 16px;
     padding: 20px;
     position: relative;
@@ -336,11 +336,43 @@
     color: rgba(61, 31, 42, 0.45);
 }
 
-.stat-value {
+.stat-value-pedidos {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: rgb(231, 231, 32);
+    line-height: 1;
+}
+
+.stat-value-total {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: rgb(62, 32, 231);
+    line-height: 1;
+}
+
+.stat-value-vendidos {
     font-family: 'Playfair Display', serif;
     font-size: 28px;
     font-weight: 700;
     color: var(--dark);
+    line-height: 1;
+}
+
+.stat-value-mas-vendido {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: green;
+    line-height: 1;
+}
+
+.stat-value-promedio {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: red;
     line-height: 1;
 }
 
@@ -416,7 +448,7 @@
 
 .product-rank.rank-1 {
     background: var(--gold);
-    color: var(--dark);
+    color: white;
 }
 
 .product-rank.rank-2 {
@@ -442,7 +474,7 @@
 .product-name {
     font-size: 13px;
     font-weight: 600;
-    color: var(--dark);
+    color: var(--shadow);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

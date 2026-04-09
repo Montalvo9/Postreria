@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <header class="header">
     <div class="header-left">
-        <div class="header-logo">Dulce R<span>&</span>ncón</div>
+        <div class="header-logo">Dulce M<span>o</span>mento</div>
         <nav class="header-nav">
             <!--POS ------>
             <a href="/Postreria/vistas/dashboard.php" class="nav-link active"><i class="fas fa-home" style="font-size:15px;"></i> POS</a>

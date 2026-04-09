@@ -42,7 +42,7 @@
                     <span class="stat-trend up">↑ 12%</span>
                 </div>
                 <div class="stat-label">Ventas totales</div>
-                <div class="stat-value" id="total-ventas">$0</div>
+                <div class="stat-value-total" id="total-ventas">$0</div>
                 <div class="stat-meta">48 transacciones</div>
             </div>
 
@@ -54,7 +54,7 @@
                     <span class="stat-trend up">↑ 8%</span>
                 </div>
                 <div class="stat-label">Pedidos</div>
-                <div class="stat-value" id="total-pedidos">0</div>
+                <div class="stat-value-pedidos" id="total-pedidos">0</div>
                 <!-- <div class="stat-meta">Promedio 6/hora</div> -->
             </div>
 
@@ -65,7 +65,7 @@
                     <span class="stat-trend down">↓ 2%</span>
                 </div>
                 <div class="stat-label">Productos vendidos</div>
-                <div class="stat-value" id="productos-vendidos">0</div>
+                <div class="stat-value-vendidos" id="productos-vendidos">0</div>
                 <div class="stat-meta">22 categorías</div>
             </div>
 
@@ -76,7 +76,7 @@
                     <span class="stat-trend down">↓ 2%</span>
                 </div>
                 <div class="stat-label">Productos más vendido</div>
-                <div class="stat-value" id="producto-mas-vendido">0</div>
+                <div class="stat-value-mas-vendido" id="producto-mas-vendido">0</div>
                 <div class="stat-meta">22 categorías</div>
             </div>
 
@@ -87,7 +87,7 @@
                     <span class="stat-trend down">↓ 2%</span>
                 </div>
                 <div class="stat-label">Promedio de venta de los tickets</div>
-                <div class="stat-value" id="promedio_ticket">0</div>
+                <div class="stat-value-promedio" id="promedio_ticket">0</div>
                 <div class="stat-meta">22 categorías</div>
             </div>
         </div>
