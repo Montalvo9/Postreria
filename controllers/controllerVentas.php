@@ -107,6 +107,18 @@ switch ($opcion) {
         exit;
         break;
 
+    case 'historial-ventas':
+        $periodo  = $_POST['periodo'] ?? 'hoy';
+        $fecha = $_POST['fecha'] ?? null;
+
+        $resultado = $db->historialVentas($periodo, $fecha);
+        echo json_encode([
+            "status" => "success",
+            "data" => $resultado
+        ]);
+        exit;
+        break;
+
     default:
         echo json_encode([
             "status" => "error",

@@ -168,7 +168,9 @@ class modeloVentas
     }
 
 
-
+    /**Devuelve el contenido de una sola venta para imprimir el tocket 
+     * despues de que la venta ha sido realizada
+     */
     public function obtenerDetalleTicket($id_venta)
     {
         // Traemos la cabecera de la venta
@@ -339,7 +341,8 @@ class modeloVentas
     }
 
 
-    public function productosVendidos($periodo, $fecha = null){
+    public function productosVendidos($periodo, $fecha = null)
+    {
         $filtroVentas = "";
         $params = [];
 
@@ -371,7 +374,47 @@ class modeloVentas
                 GROUP BY dv.id_producto
                 ORDER BY total_vendidos DESC";
 
-        $stmt = $this->db->prepare($sql); 
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**Funcion para consultar el historial de ventas para poder reemprimir el ticket
+     * esta funcion es una lista de transacciones (ejem- venta#1)
+     */
+
+    public function historialVentas($periodo, $fecha = null)
+    {
+        $filtroVentas = "";
+        $params = [];
+
+        if ($periodo == "hoy") {
+            $filtroVentas = "DATE(v.fecha) = CURDATE()";
+        } elseif ($periodo == "semana") {
+            $filtroVentas = "YEARWEEK(v.fecha,1) = YEARWEEK(CURDATE(),1)";
+        } elseif ($periodo == "mes") {
+            $filtroVentas = "MONTH(v.fecha) = MONTH(CURDATE())
+                         AND YEAR(v.fecha) = YEAR(CURDATE())";
+        } elseif ($periodo == "custom") {
+            $filtroVentas = "DATE(v.fecha) = ?";
+            $params[] = $fecha;
+        }
+
+        //METRICAS 
+
+        $sql = "SELECT 
+                v.id_venta,
+                v.fecha,
+                v.total,
+                u.nombre as vendedor
+                FROM ventas v
+                INNER JOIN usuarios u ON v.id_usuario = u.id_usuario
+                WHERE $filtroVentas
+                AND v.estado = 'completada'
+                ORDER BY v.fecha DESC"; //Las mas recientes
+
+        $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

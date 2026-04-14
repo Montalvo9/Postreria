@@ -137,10 +137,10 @@
                     </div>
                 </div> -->
                 <div>
-                    <h1>Metodos de pago</h1>
+                    <!--<h1>Metodos de pago</h1> -->
                 </div> 
                 <div>
-                    <h1>Acciones rapidas</h1>
+                    <!-- <h1>Acciones rapidas</h1> -->
                 </div>           
             </div>
         </div>
