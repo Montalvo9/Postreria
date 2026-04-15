@@ -147,9 +147,8 @@ $categorias = $modelo->obtenerCategoria();
                 <div class="actions">
                     <button class="btn-cobrar" onclick="abrirModalCobro()"><i class="fas fa-credit-card"></i> Cobrar</button>
                     <div class="btn-row">
-                        <button class="btn-secondary" onclick="imprimirTicket()"><i class="fas fa-print"></i>Ticket</button>
-                        <button class="btn-secondary" onclick="nuevoPedido()"><i class="fas fa-file-circle-plus"></i>Nuevo</button>
-                        <button class="btn-secondary" onclick="limpiarCarrito()"><i class="fas fa-trash"></i>Limpiar</button>
+                        <button class="btn-secondary" style="background-color: blue; color:white" onclick="imprimirTicket()"><i class="fas fa-print"></i>Ticket</button>
+                        <button class="btn-secondary" style="background-color: red; color: white" onclick="limpiarCarrito()"><i class="fas fa-trash"></i>Limpiar</button>
                     </div>
                 </div>
 
