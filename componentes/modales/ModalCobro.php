@@ -7,12 +7,16 @@
             <div class="amount" id="modal-total-amount">$0.00</div>
         </div>
         <div class="payment-methods">
+            <!-- BOTON DE PAGO CON EFECTIVO -->
             <button class="pay-btn selected" id="pay-efectivo" onclick="selectPago('efectivo')">
-                <span class="pay-icon">💵</span>Efectivo
+                <span class="pay-icon"><i class="bi bi-cash-stack"></i></span>Efectivo
             </button>
-            <button class="pay-btn" id="pay-tarjeta" onclick="selectPago('tarjeta')">
+            <!-- BOTON DE PAGO CON Tarjeta -->
+            <!--  <button class="pay-btn" id="pay-tarjeta" onclick="selectPago('tarjeta')">
                 <span class="pay-icon">💳</span>Tarjeta
-            </button>
+            </button> -->
+
+            <!-- BOTON DE PAGO POR TRANSFERENCIA -->
             <button class="pay-btn" id="pay-transferencia" onclick="selectPago('transferencia')">
                 <span class="pay-icon">📲</span>Transf.
             </button>

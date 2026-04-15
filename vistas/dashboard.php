@@ -32,6 +32,7 @@ $categorias = $modelo->obtenerCategoria();
     <link rel="stylesheet" href="/Postreria/librerias/bootstrap/CSS/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="/Postreria/CSS/principal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Postreria/librerias/libreriasGenerales.php'; ?>
 </head>
 
@@ -99,64 +100,77 @@ $categorias = $modelo->obtenerCategoria();
 
             </div>
         </div>
-
         <div class="right-panel">
+
             <div class="ticket-header">
                 <div class="ticket-title">
                     Pedido
                     <!--<span class="ticket-mesa-badge" id="ticket-mesa">Mesa 1</span>-->
                 </div>
                 <div class="ticket-meta" id="ticket-hora">—</div>
+            </div>
 
-                <div class="ticket-items" id="ticket-items">
-                    <div class="empty-state" id="empty-state">
-                        <div class="empty-state-icon">🍰</div>
-                        <div class="empty-state-text">Agrega productos<br>al pedido</div>
-                    </div>
+            <!-- LISTA DE PRODUCTOS (SCROLL) -->
+            <div class="ticket-items" id="ticket-items">
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-state-icon">🍰</div>
+                    <div class="empty-state-text">Agrega productos<br>al pedido</div>
                 </div>
+            </div>
 
-                <!--Descuento Este modulo funciona solo que lo deje para una version 2
-                <div class="discount-section">
-                    <div class="discount-toggle" onclick="toggleDescuento()">
-                        <span id="desc-arrow">▸</span> Aplicar descuento
-                    </div>
-                    <div class="descuento-panel" id="descuento-panel" style="display: none;">
-                        <div class="discount-row">
-                            <input type="number" name="desc-valor" id="desc-valor" placeholder="10" min="0">
-                            <div class="discount-type">
-                                <button id="btn-pct" class="active" onclick="tipodesc('porcentaje')">%</button>
-                                <button id="btn-monto" onclick="tipodesc('monto')">$</button>
-                            </div>
-                            <button class="discount-apply" onclick="aplicarDescuento()"> <i class="fa-solid fa-check"></i>
-                            </button>
-                        </div>
+            <!--Descuento Este modulo funciona solo que lo deje para una version 2
+    <div class="discount-section">
+        <div class="discount-toggle" onclick="toggleDescuento()">
+            <span id="desc-arrow">▸</span> Aplicar descuento
+        </div>
+        <div class="descuento-panel" id="descuento-panel" style="display: none;">
+            <div class="discount-row">
+                <input type="number" name="desc-valor" id="desc-valor" placeholder="10" min="0">
+                <div class="discount-type">
+                    <button id="btn-pct" class="active" onclick="tipodesc('porcentaje')">%</button>
+                    <button id="btn-monto" onclick="tipodesc('monto')">$</button>
+                </div>
+                <button class="discount-apply" onclick="aplicarDescuento()"> <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
+        </div>
+    </div>  
+    -->
 
-                    </div>
-
-                </div>  -->
+            <!-- FOOTER (FIJO ABAJO) -->
+            <div class="ticket-footer">
 
                 <!--TOTALES -->
                 <div class="totals" id="totales">
                     <div class="total-row"><span>Subtotal:</span><span id="subtotal-val">$0.00</span></div>
-                    <div class="total-row discount-row-display" id="desc-row" style="display:none"><span>🏷 Descuento</span><span id="desc-display">-$0.00</span></div>
+                    <div class="total-row discount-row-display" id="desc-row" style="display:none">
+                        <span>🏷 Descuento</span><span id="desc-display">-$0.00</span>
+                    </div>
                     <div class="total-row grand"><span>Total</span><span id="total-val">$0.00</span></div>
                 </div>
 
                 <!-- ACCIONES (abrir el modal, limpiar, imprimir ticket, nuevo pedido, limpiar pedido-->
-
                 <div class="actions">
-                    <button class="btn-cobrar" onclick="abrirModalCobro()"><i class="fas fa-credit-card"></i> Cobrar</button>
+                    <button class="btn-cobrar" onclick="abrirModalCobro()">
+                        <i class="fas fa-credit-card"></i> Cobrar
+                    </button>
                     <div class="btn-row">
-                        <button class="btn-secondary" style="background-color: blue; color:white" onclick="imprimirTicket()"><i class="fas fa-print"></i>Ticket</button>
-                        <button class="btn-secondary" style="background-color: red; color: white" onclick="limpiarCarrito()"><i class="fas fa-trash"></i>Limpiar</button>
+                        <button class="btn-secondary" style="background-color: blue; color:white" onclick="imprimirTicket()">
+                            <i class="fas fa-print"></i>Ticket
+                        </button>
+                        <button class="btn-secondary" style="background-color: red; color: white" onclick="limpiarCarrito()">
+                            <i class="fas fa-trash"></i>Limpiar
+                        </button>
                     </div>
                 </div>
 
-                <!--MODAL DE COBRO -->
-
-                <?php include __DIR__ . '/../componentes/modales/ModalCobro.php'; ?>
             </div>
+
+            <!--MODAL DE COBRO -->
+            <?php include __DIR__ . '/../componentes/modales/ModalCobro.php'; ?>
+
         </div>
+
     </div>
 
 
