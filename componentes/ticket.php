@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/Postreria/CSS/ticket.css">
 </head>
 <body onload="window.print();"> <div class="text-center">
-        <h1 class="empresa">El Dulce Rincón</h1>
+        <h1 class="empresa">Dulce momento</h1>
         <p>Ticket de Venta: #<?php echo $venta['id_venta']; ?></p>
         <p>Fecha: <?php echo date("d/m/Y H:i", strtotime($venta['fecha'])); ?></p>
         <p>Atendido por: <?php echo htmlspecialchars($venta['usuario']); ?></p>

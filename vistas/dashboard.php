@@ -115,7 +115,7 @@ $categorias = $modelo->obtenerCategoria();
                     </div>
                 </div>
 
-                <!--Descuento -->
+                <!--Descuento Este modulo funciona solo que lo deje para una version 2
                 <div class="discount-section">
                     <div class="discount-toggle" onclick="toggleDescuento()">
                         <span id="desc-arrow">▸</span> Aplicar descuento
@@ -133,7 +133,7 @@ $categorias = $modelo->obtenerCategoria();
 
                     </div>
 
-                </div>
+                </div>  -->
 
                 <!--TOTALES -->
                 <div class="totals" id="totales">

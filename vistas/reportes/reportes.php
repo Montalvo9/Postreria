@@ -39,11 +39,10 @@
             <div class="stat-card ventas">
                 <div class="stat-header">
                     <span class="stat-icon"><i class="fas fa-coins"></i></span>
-                    <span class="stat-trend up">↑ 12%</span>
                 </div>
                 <div class="stat-label">Ventas totales</div>
                 <div class="stat-value-total" id="total-ventas">$0</div>
-                <div class="stat-meta">48 transacciones</div>
+                
             </div>
 
             <!-- Card pedidos -->
@@ -51,7 +50,7 @@
             <div class="stat-card pedidos">
                 <div class="stat-header">
                     <span class="stat-icon">🧾</span>
-                    <span class="stat-trend up">↑ 8%</span>
+                    
                 </div>
                 <div class="stat-label">Pedidos</div>
                 <div class="stat-value-pedidos" id="total-pedidos">0</div>
@@ -62,33 +61,30 @@
             <div class="stat-card productos">
                 <div class="stat-header">
                     <span class="stat-icon"><i class="fas fa-cookie"></i></span>
-                    <span class="stat-trend down">↓ 2%</span>
+                    
                 </div>
                 <div class="stat-label">Productos vendidos</div>
                 <div class="stat-value-vendidos" id="productos-vendidos">0</div>
-                <div class="stat-meta">22 categorías</div>
+                
             </div>
 
             <!-- Card Productos vendidos -->
             <div class="stat-card productos">
                 <div class="stat-header">
                     <span class="stat-icon"><i class="fas fa-birthday-cake"></i></span>
-                    <span class="stat-trend down">↓ 2%</span>
                 </div>
                 <div class="stat-label">Productos más vendido</div>
                 <div class="stat-value-mas-vendido" id="producto-mas-vendido">0</div>
-                <div class="stat-meta">22 categorías</div>
             </div>
 
             <!-- Promedio de venta en los tickets -->
             <div class="stat-card promedio">
                 <div class="stat-header">
                     <span class="stat-icon"><i class="fas fa-chart-line"></i></span>
-                    <span class="stat-trend down">↓ 2%</span>
                 </div>
                 <div class="stat-label">Promedio de venta de los tickets</div>
                 <div class="stat-value-promedio" id="promedio_ticket">0</div>
-                <div class="stat-meta">22 categorías</div>
+                
             </div>
         </div>
 

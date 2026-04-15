@@ -44,6 +44,10 @@ function setPeriod_P(periodo, element) {
  * y cantidad de productos vendidos
 ) */
 
+
+let nombre_periodo = "Hoy";
+let rango_fecha = "";
+
 function setPeriod(periodo, element) {
     //Quitamos la clase active, la clase activa es la que resaltar el elemento en el que estamos */
     document.querySelectorAll(".date-btn").forEach(btn => {
@@ -57,7 +61,33 @@ function setPeriod(periodo, element) {
 
     if (periodo === "custom") {
         fecha = element.value;
+        nombre_periodo = "Personalizado";
+        rango_fecha = fecha;
+    } else if (periodo === "hoy") {
+        nombre_periodo = "Hoy";
+        rango_fecha = new Date().toLocaleString();
+
+    } else if (periodo === "semana") {
+        nombre_periodo = "Semana"
+        let hoy = new Date();
+        let inicio = new Date(hoy.setDate(hoy.getDate() - hoy.getDay()));
+        let fin = new Date();
+
+        rango_fecha = `${inicio.toLocaleDateString()} - ${fin.toLocaleDateString()}`;
+    } else if (periodo === "mes") {
+        nombre_periodo = "Mes";
+
+        let hoy = new Date();
+        let inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        let fin = new Date();
+
+        rango_fecha = `${inicio.toLocaleDateString()} - ${fin.toLocaleDateString()}`;
+
     }
+
+
+
+    /**AJAX  */
 
     $.ajax({
         url: "/Postreria/controllers/controllerVentas.php",
@@ -166,12 +196,50 @@ document.addEventListener("DOMContentLoaded", function() {
 $(document).ready(function() {
     tablaProductosVendidos = $('#tablaProductosVendidos').DataTable({
         dom: 'Bfrtip',
-        buttons: [
-            { extend: 'csv', className: 'btn btn-info' },
-            { extend: 'excel', className: 'btn btn-success' },
-            { extend: 'pdf', className: 'btn btn-danger' },
+        buttons: [{
+                extend: 'excel',
+                className: 'btn btn-success',
+                title: function() {
+                    return `Reporte de ventas - ${nombre_periodo} ${rango_fecha}</span>)`;
+                }
+            },
+            {
+                extend: 'pdf',
+                className: 'btn btn-danger',
+                title: '',
+                customize: function(doc) {
 
-            { extend: 'print', className: 'btn btn-warning' },
+                    doc.content.unshift({
+                        text: [
+                            { text: 'Reporte de ventas - ' + nombre_periodo + '\n', style: 'header' },
+                            { text: '(' + rango_fecha + ')', color: 'red' }
+                        ],
+                        margin: [0, 0, 0, 10]
+                    });
+
+                    // opcional: centrar
+                    doc.styles.header = {
+                        fontSize: 16,
+                        bold: true,
+                        alignment: 'center'
+                    };
+                }
+            },
+
+
+            {
+                extend: 'print',
+                className: 'btn btn-warning',
+                title: '',
+                customize: function(win) {
+                    $(win.document.body).prepend(`
+                       <h3 style="text-align:center;">
+                     Reporte de ventas - ${nombre_periodo}
+                       (<span style="color:red">${rango_fecha}</span>)
+                     </h3 >
+        `);
+                }
+            },
         ],
         language: {
             lengthMenu: "Mostrar MENU filas por página",

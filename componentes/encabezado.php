@@ -29,10 +29,12 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php endif ?>
 
             <!-- REPORTES -->
-            <a href="/Postreria/vistas/reportes/reportes.php" class="nav-link active"><i class="fas fa-file-alt" style="font-size: 15px;"></i>Reportes</a>
+            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+                <a href="/Postreria/vistas/reportes/reportes.php" class="nav-link active"><i class="fas fa-file-alt" style="font-size: 15px;"></i>Reportes</a>
+            <?php endif ?>
 
-            <!-- Historial de ventas --> 
-             <a href="/Postreria/vistas/reportes/historial.php" class="nav-link active"><i class="fas fa-history" style="font-size: 15px;"></i>Historial</a>  
+            <!-- Historial de ventas -->
+            <a href="/Postreria/vistas/reportes/historial.php" class="nav-link active"><i class="fas fa-history" style="font-size: 15px;"></i>Historial</a>
 
             <!-- CERRAR SESIÓN -->
             <a href="/Postreria/controllers/cerrarSesion.php" class="nav-link active"><i class="fas fa-sign-out-alt" style="font-size: 15px;"></i> Salir</a>

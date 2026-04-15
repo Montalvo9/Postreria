@@ -21,10 +21,23 @@ class modeloVentas
             /**Validamos que exista productos en el stock, si no hay stock entonces venderan productos que ya no se tiene */
 
             foreach ($items as $item) {
-                $sqlCheck = "SELECT stock, nombre FROM productos WHERE id_producto = :id";
+                $sqlCheck = "SELECT stock, nombre, activo FROM productos WHERE id_producto = :id";
                 $stmCheck = $this->db->prepare($sqlCheck);
                 $stmCheck->execute([':id' => $item['id']]);
                 $producto = $stmCheck->fetch(PDO::FETCH_ASSOC);
+
+                // Nueva validación: ¿Existe? ¿Está activo? ¿Hay stock?
+                if (!$producto) {
+                    throw new Exception("El producto ya no existe en la base de datos.");
+                }
+
+                if ($producto['activo'] == 0) {
+                    throw new Exception("El producto '" . $producto['nombre'] . "' está desactivado y no se puede vender.");
+                }
+
+                if ($producto['stock'] < $item['qty']) {
+                    throw new Exception("Stock insuficiente para: " . $producto['nombre']);
+                }
 
                 if (!$producto || $producto['stock'] < $item['qty']) {
                     //Si no hay suficiente stock lanzamos una excepción para ir al catch
