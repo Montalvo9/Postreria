@@ -23,7 +23,7 @@ switch ($opcion) {
                 "accion" => "<div class='d-flex gap-1 justify-content-center'>
                              <button class='btn btn-sm btn-outline-primary' onclick='obtenerDatos({$value['id_categoria']})'title='Editar'> <i class='fas fa-edit'></i> </button>
 
-                            <button class='btn btn-sm btn-outline-danger' onclick='eliminarCategoria({$value['id_categoria']})'  title='Eliminar'> <i class='fas fa-trash'></i> </button>
+                          <!--  <button class='btn btn-sm btn-outline-danger' onclick='eliminarCategoria({$value['id_categoria']})'  title='Eliminar'> <i class='fas fa-trash'></i> </button> -->
                              </div>"
             ];
         }

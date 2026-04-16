@@ -16,7 +16,8 @@ if (!isset($_SESSION['usuario'])) {
 require_once __DIR__ . '/../models/modeloProducto.php';
 
 $modelo = new modeloProducto();
-$productos = $modelo->consulta();
+//$productos = $modelo->consulta(); //este hace una cinsulta de los productos general
+$productos = $modelo ->productosActivos();
 $categorias = $modelo->obtenerCategoria();
 
 ?>
@@ -89,6 +90,7 @@ $categorias = $modelo->obtenerCategoria();
                         data-nombre="<?= $producto['nombre'] ?>"
                         data-precio="<?= $producto['precio'] ?>"
                         data-categoria="<?= strtolower($producto['nombre_categoria']) ?>">
+                        
 
 
                         <h4 class="product-name"><?= $producto['nombre'] ?></h4>

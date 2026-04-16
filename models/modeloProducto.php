@@ -12,7 +12,9 @@ class modeloProducto
         $this->db = PostreriaConnection::ConnectionPostreria();
     }
 
-    /**Funcion que consulta a los usuarios existentes en la bd para mostrarlos en el frontend con un DataTable */
+    /**Funcion que consulta a los usuarios existentes en la bd para mostrarlos en el frontend con un DataTable 
+     * solo trae productos cuya categoria esta activa
+    */
     public function consulta()
     {
         $this->modelo = [];
@@ -30,6 +32,7 @@ class modeloProducto
         FROM productos p
         INNER JOIN categorias c 
             ON p.categoria = c.id_categoria
+            WHERE c.activo = 1
         
         ");
 
@@ -39,6 +42,27 @@ class modeloProducto
         return $this->modelo;
     }
 
+    /**Esta función muestra todos los producros activos en el catalogo del front end (en el grid) */
+    function productosActivos(){
+        $query = $this->db->prepare("
+        SELECT 
+        p.id_producto,
+        p.nombre, 
+        p.descripcion,
+        p.precio,
+        p.stock,
+        c.nombre as nombre_categoria,
+        p.activo,
+        p.fecha_creacion
+        FROM productos as p
+        INNER JOIN categorias c
+        ON p.categoria = c.id_categoria
+        WHERE c.activo = 1
+        AND p.activo = 1");
+
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function obtenerCategoria()
     {

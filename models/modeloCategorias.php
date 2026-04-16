@@ -24,7 +24,7 @@ class modeloCategorias
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**Funcion para editar categorias 
+    /** 
      * 
      */
 
