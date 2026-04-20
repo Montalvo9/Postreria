@@ -1,5 +1,5 @@
 <div>
-    <h3><i class="fas fa-history"></i> Historial de ventas</h3>
+    <h3><i class="fas fa-cash-register"></i> Productos vendidos</h3>
     <table id="tablaProductosVendidos" class="table table-striped table-hover table-bordered ">
         <thead class="table-danger">
             <tr>
