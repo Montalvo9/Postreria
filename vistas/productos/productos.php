@@ -86,18 +86,6 @@
                     <span class="icon"><i class="fas fa-cubes"></i></span>
                     Listado de productos
                 </div>
-
-                <div class="panel-stats">
-                    <div class="stat-badge">
-                        <span class="icon"><i class="fas fa-user"></i></span>
-                        <span id="total-productos">0</span> usuarios
-                    </div>
-
-                    <div class="stat-badge">
-                        <span class="s-emoji">✅</span>
-                        <span id="productos-activos">0</span> activos
-                    </div>
-                </div>
             </div>
 
             <!-- TABLA -->

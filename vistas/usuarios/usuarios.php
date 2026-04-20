@@ -109,18 +109,6 @@
                     <span class="icon"><i class="fas fa-users"></i></span>
                     Equipo registrado
                 </div>
-
-                <div class="panel-stats">
-                    <div class="stat-badge">
-                        <span class="icon"><i class="fas fa-user"></i></span>
-                        <span id="total-usuarios">0</span> usuarios
-                    </div>
-
-                    <div class="stat-badge">
-                        <span class="s-emoji">✅</span>
-                        <span id="usuarios-activos">0</span> activos
-                    </div>
-                </div>
             </div>
 
             <!-- TABLA -->

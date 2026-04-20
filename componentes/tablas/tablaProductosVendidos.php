@@ -4,6 +4,7 @@
         <thead class="table-danger">
             <tr>
                 <th>Nombre del producto</th>
+                <th>Precio</th>
                 <th>Total vendidos </th>
                 <th>Total generado</th>
             </tr>

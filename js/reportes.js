@@ -280,7 +280,7 @@ function cargarTablaProductos(periodo, fecha = null) {
             fecha: fecha
         },
         success: function(response) {
-            // console.log("Cuales son los productos vendidos que manda el server", response);
+            //console.log("Cuales son los productos vendidos que manda el server", response);
             /**LIMPIAR TABLA */
             tablaProductosVendidos.clear();
             if (!response.data || response.data.length === 0) {
@@ -292,6 +292,7 @@ function cargarTablaProductos(periodo, fecha = null) {
             response.data.forEach(prod => {
                 tablaProductosVendidos.row.add([
                     prod.nombre,
+                    prod.precio,
                     prod.total_vendidos,
                     "$" + parseFloat(prod.total_generado).toFixed(2)
 
@@ -349,7 +350,7 @@ function historialVentas(periodo, fecha = null) {
             fecha: fecha
         },
         success: function(response) {
-            console.log("Respuesta del historial:", response);
+            // console.log("Respuesta del historial:", response);
 
             // 1. Limpiamos la tabla antes de meter datos nuevos
             tablaHistorialVentas.clear();

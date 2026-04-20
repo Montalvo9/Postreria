@@ -375,7 +375,7 @@ class modeloVentas
 
         //metricas 
 
-        $sql = "SELECT 
+        /*$sql = "SELECT 
                 p.nombre,
                 SUM(dv.cantidad) as total_vendidos,
                 SUM(dv.subtotal) as total_generado
@@ -385,8 +385,29 @@ class modeloVentas
                 WHERE $filtroVentas
                 AND v.estado = 'completada'
                 GROUP BY dv.id_producto
-                ORDER BY total_vendidos DESC";
+                ORDER BY total_vendidos DESC";*/
 
+                /**Esta consulta es mas  precisa , agrupa por producto y precio, en dado caso de que cambia el precio de un producto
+                 * lo va  miostrar en un nueva columna, ejemplo alitas valen 90, aparecen en la tabla , pero si cambio de precio a 100 ahora sale en otra fila alitas 90 y la que 
+                 * se vendio en 80 ahi se mostrara para que el usuario se de cuenta que vendio algo en 90 y otro en 100 por el cambio de precio
+                 * 
+                 * 
+                */
+
+        $sql = "SELECT 
+                p.nombre,
+                dv.precio, -- Seleccionamos el precio de la tabla detalle
+                SUM(dv.cantidad) as total_vendidos,
+                SUM(dv.subtotal) as total_generado
+            FROM detalle_ventas dv
+            INNER JOIN productos p ON dv.id_producto = p.id_producto
+            INNER JOIN ventas v ON dv.id_venta = v.id_venta
+            WHERE $filtroVentas
+            AND v.estado = 'completada'
+            GROUP BY dv.id_producto, dv.precio -- Crucial: Agrupar por ambos campos
+            ORDER BY p.nombre ASC, total_vendidos DESC";
+
+                
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
 
